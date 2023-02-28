@@ -1,0 +1,33 @@
+.reglogbackground {
+    background-image: url('/src/assets/Images/register.jpg');
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.container {
+    display: relative;
+}
+.girl {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+.girl {
+    position: relative;
+    height: 70px;
+}
+.text-container {
+    max-width: 600px;
+    margin-top: 7%;
+    margin-left: 50%;
+}
+.text-container h1 {
+    font-size: 80px;
+    font-weight: 400;
+}
+.text-container a {
+    text-decoration: none;
+    background: #00986f;
+    padding: 14px 40px;
+    display: inline-block;
+}

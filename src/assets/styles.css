@@ -31,3 +31,24 @@
     padding: 14px 40px;
     display: inline-block;
 }
+
+.unContainer {
+    max-width: inherit;
+    padding: inherit;
+    margin: inherit;
+}
+
+.row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.headerbar-200 {
+    width: 200px;
+}
+
+@media (max-width: 350px) {
+    .headerbar-200 {
+        width: auto;
+    }
+}

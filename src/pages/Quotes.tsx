@@ -2,12 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Col, Button, Row, Card, Form, Collapse, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { getQuotes } from 'services/quotesService';
-interface QuoteInterface {
-    content: string;
-    author: string;
-    likes: number;
-    tags: string[];
-}
+import QuoteInterface from 'types/interfaces/quote.interface';
 
 const Quotes: React.FC = () => {
     const [quotes, setQuotes] = useState<QuoteInterface[]>([]);

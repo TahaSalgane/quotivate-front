@@ -32,7 +32,7 @@ const Home: React.FC = () => {
                             </Card.Body>
                             <span style={{ marginLeft: '15px', color: '#999999', fontSize: '14px' }}>
                                 tags :&nbsp;&nbsp;
-                                <Link to={quote.categorie} className=" text-secondary">
+                                <Link to={`/tag/${quote.categorie}`} className=" text-secondary">
                                     {quote.categorie}
                                 </Link>
                             </span>

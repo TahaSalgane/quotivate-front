@@ -10,6 +10,9 @@ import Register from 'pages/Register';
 import Forgotpassword from 'pages/ForgotPassword';
 import Users from 'pages/Users';
 import Quotes from 'pages/Quotes';
+import Tag from 'pages/Tag';
+import Dashboard from 'pages/Dashboard';
+import Categories from 'pages/Categories';
 const App: FC = () => {
     return (
         <Routes>
@@ -17,6 +20,9 @@ const App: FC = () => {
                 <Route path="/" element={<Home />}></Route>
                 <Route path="admin/users" element={<Users />} />
                 <Route path="admin/quotes" element={<Quotes />} />
+                <Route path="tag/:tag" element={<Tag />} />
+                <Route path="admin/dashboard" element={<Dashboard />} />
+                <Route path="admin/categories" element={<Categories />} />
             </Route>
             <Route element={<Layout layoutDesign="reglogbackground" isNotDark />}>
                 <Route path="login" element={<Login />} />

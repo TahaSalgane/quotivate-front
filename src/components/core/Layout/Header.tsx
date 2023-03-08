@@ -11,9 +11,9 @@ type props = {
     isNotDark?: boolean;
 };
 const Navbars: React.FC<props> = ({ isNotDark }: props) => {
-    const users = { isadmin: true };
+    const users = { isadmin: false };
     return (
-        <Navbar bg={!isNotDark ? 'dark' : undefined} bg-dark expand="lg" variant="dark" className="px-3">
+        <Navbar bg={!isNotDark ? 'dark' : undefined} expand="lg" variant="dark" className="px-3">
             <Navbar.Brand as={NavLink} to="/" className={`${users.isadmin ? 'headerbar-200 me-1' : 'me-5'}`}>
                 Quotivate
             </Navbar.Brand>

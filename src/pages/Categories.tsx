@@ -1,30 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Col, Button, Row, Card, Form, Collapse, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { getQuotes } from 'services/quotesService';
-interface QuoteInterface {
-    content: string;
-    author: string;
-    likes: number;
-    tags: string[];
-}
-
 const Quotes: React.FC = () => {
-    const [quotes, setQuotes] = useState<QuoteInterface[]>([]);
     const [open, setOpen] = useState<boolean>(false);
-
-    useEffect(() => {
-        const loadData = async () => {
-            try {
-                const { data } = await getQuotes();
-                setQuotes(data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        loadData();
-    }, []);
-    console.log(quotes);
     return (
         <div className="">
             <Button
@@ -33,7 +11,7 @@ const Quotes: React.FC = () => {
                 aria-controls="example-collapse-text"
                 aria-expanded={open}
             >
-                Add Quote
+                Add Categorie
             </Button>
             <Collapse in={open}>
                 <div id="example-collapse-text">
@@ -43,30 +21,17 @@ const Quotes: React.FC = () => {
                             <Card className="shadow px-4 text-black">
                                 <Card.Body>
                                     <div className="mb-3 mt-md-4">
-                                        <h2 className="fw-bold mb-2 text-center text-uppercase">Add Quote</h2>
+                                        <h2 className="fw-bold mb-2 text-center text-uppercase">Add Categorie</h2>
                                         <div className="mb-3">
                                             <Form>
-                                                <Form.Group className="mb-3" controlId="Author">
-                                                    <Form.Label className="text-center fw-bold">Author</Form.Label>
-                                                    <Form.Control type="text" placeholder="Enter Name" />
-                                                </Form.Group>
-
                                                 <Form.Group className="mb-3" controlId="quategorie">
                                                     <Form.Label className="text-center fw-bold">Categorie</Form.Label>
                                                     <Form.Control type="text" placeholder="enter categorie" />
                                                 </Form.Group>
-                                                <Form.Group className="mb-3" controlId="quategorie">
-                                                    <Form.Label className="text-center fw-bold">Content</Form.Label>
-                                                    <Form.Control
-                                                        as="textarea"
-                                                        style={{ height: '100px' }}
-                                                        placeholder="enter Content"
-                                                    />
-                                                </Form.Group>
                                                 <Form.Group className="mb-3" controlId="formBasicCheckbox"></Form.Group>
                                                 <div className="d-grid">
                                                     <Button variant="primary" type="submit">
-                                                        Create Quote
+                                                        Create Categorie
                                                     </Button>
                                                 </div>
                                             </Form>

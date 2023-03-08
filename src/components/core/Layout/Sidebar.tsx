@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGauge, faUsers, faQuoteRight, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faGauge, faUsers, faQuoteRight, faRightFromBracket, faTags } from '@fortawesome/free-solid-svg-icons';
 export default function Sidebar() {
     return (
         <div
@@ -10,7 +10,7 @@ export default function Sidebar() {
         >
             <ul className="nav nav-pills flex-column mb-auto">
                 <li>
-                    <Link to="dashboard" className="nav-link text-white">
+                    <Link to="admin/dashboard" className="nav-link text-white">
                         <FontAwesomeIcon size="xs" className="me-1" icon={faGauge} />
                         <span>Dashboard</span>
                     </Link>
@@ -25,6 +25,12 @@ export default function Sidebar() {
                     <Link to="admin/quotes" className="nav-link text-white">
                         <FontAwesomeIcon size="xs" className="me-1" icon={faQuoteRight} />
                         Quotes
+                    </Link>
+                </li>
+                <li>
+                    <Link to="admin/categories" className="nav-link text-white">
+                        <FontAwesomeIcon size="xs" className="me-1" icon={faTags} />
+                        Categories
                     </Link>
                 </li>
             </ul>

@@ -1,8 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Col, Button, Row, Card, Form, Collapse, Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { getCategoris, deleteCategorie, createCategorie } from 'services/categoriesService';
+import CateogieInterface from 'types/interfaces/categorie.interface';
+import CustomModal from 'components/ui/costumeModal';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+const schema = Yup.object().shape({
+    name: Yup.string().required('Required'),
+});
+interface MyFormValues {
+    name: string;
+}
+const submitForm = async (values: MyFormValues) => {
+    try {
+        const res = await createCategorie(values);
+        console.log(res);
+    } catch (excep) {
+        console.log(excep);
+    }
+    // console.log(values, process.env.REACT_APP_API_URL);
+};
 const Quotes: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
+    const [categories, setCategories] = useState<CateogieInterface[]>([]);
+    const [showModal, setShowModal] = useState(false);
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                const res = await getCategoris();
+                setCategories(res.data);
+                console.log(categories);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        loadData();
+    }, []);
+
+    const handleDelete = async (id: string) => {
+        await deleteCategorie(id);
+        console.log(id);
+        setShowModal(false);
+    };
+    const handlupdate = async (id: string) => {
+        await deleteCategorie(id);
+        console.log(id);
+        setShowModal(false);
+    };
     return (
         <div className="">
             <Button
@@ -15,105 +59,103 @@ const Quotes: React.FC = () => {
             </Button>
             <Collapse in={open}>
                 <div id="example-collapse-text">
-                    <Row className="mb-5 d-flex pt-3 w-75">
-                        <Col md={8} lg={6} xs={12} style={{ marginLeft: '100px', marginBottom: '50px', width: '65%' }}>
-                            <div className="border border-2 border-primary"></div>
-                            <Card className="shadow px-4 text-black">
-                                <Card.Body>
-                                    <div className="mb-3 mt-md-4">
-                                        <h2 className="fw-bold mb-2 text-center text-uppercase">Add Categorie</h2>
-                                        <div className="mb-3">
-                                            <Form>
-                                                <Form.Group className="mb-3" controlId="quategorie">
-                                                    <Form.Label className="text-center fw-bold">Categorie</Form.Label>
-                                                    <Form.Control type="text" placeholder="enter categorie" />
-                                                </Form.Group>
-                                                <Form.Group className="mb-3" controlId="formBasicCheckbox"></Form.Group>
-                                                <div className="d-grid">
-                                                    <Button variant="primary" type="submit">
-                                                        Create Categorie
-                                                    </Button>
+                    <Formik
+                        validationSchema={schema}
+                        onSubmit={submitForm}
+                        initialValues={{
+                            name: '',
+                        }}
+                    >
+                        {({ handleSubmit, handleChange, values, touched, errors }) => (
+                            <Form noValidate onSubmit={handleSubmit}>
+                                <Row style={{ width: '90%' }} className="vh-75 d-flex justify-content-center pt-3">
+                                    <Col md={8} lg={6} xs={12}>
+                                        <div className=" border border-2 border-primary" style={{ width: '90%' }}></div>
+                                        <Card
+                                            className=" shadow px-4 text-white bg-transparent "
+                                            style={{ paddingBottom: '70px', width: '90%' }}
+                                        >
+                                            <Card.Body>
+                                                <div className="mb-3 mt-md-4">
+                                                    <h2 className="fw-bold mb-2 text-center text-uppercase text-dark">
+                                                        Add Categorie
+                                                    </h2>
+
+                                                    <div className="mb-3">
+                                                        <Form.Group className="mb-3" controlId="validationFormik01">
+                                                            <Form.Label>Username</Form.Label>
+                                                            <Form.Control
+                                                                type="text"
+                                                                name="name"
+                                                                placeholder="Enter Your Cat"
+                                                                value={values.name}
+                                                                onChange={handleChange}
+                                                                isValid={touched.name && !errors.name}
+                                                                isInvalid={!!errors.name}
+                                                            />
+                                                            <Form.Control.Feedback type="invalid">
+                                                                {errors.name}
+                                                            </Form.Control.Feedback>
+                                                        </Form.Group>
+
+                                                        <div className="d-grid pt-3">
+                                                            <Button type="submit">Add Cateogire</Button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </Form>
-                                            <div className="mt-3"></div>
-                                        </div>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                </Row>
+                            </Form>
+                        )}
+                    </Formik>
                 </div>
             </Collapse>
             <h2 className="m-5">All Quotes</h2>
-            <Table className="w-75 m-4 text-black" striped bordered hover variant="white">
+            <Table style={{ width: '65%' }} className="m-4 text-black" striped bordered hover variant="white">
                 <thead>
                     <tr>
-                        <th>id</th>
-                        <th>author</th>
-                        <th>Categorie</th>
-                        <th>Content</th>
-                        <th>Number of Likes</th>
-                        <th>Number of Comments</th>
-                        <th className="text-center" colSpan={2}>
+                        <th className="text-center">Content</th>
+                        <th className="text-center " colSpan={2}>
                             Action
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>azetat@gmail.com</td>
-                        <td>azazeazd</td>
-                        <td>1</td>
-                        <td>12</td>
-                        <td>
-                            <Link className="btn btn-warning" to="update/1">
-                                Update
-                            </Link>
-                        </td>
-                        <td>
-                            <Link className="btn btn-danger" to="delete/1">
-                                delete
-                            </Link>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Jacob</td>
-                        <td>azetat@gmail.com</td>
-                        <td>azazeazd</td>
-                        <td>1</td>
-                        <td>12</td>
-                        <td>
-                            <Link className="btn btn-warning" to="update/2">
-                                Update
-                            </Link>
-                        </td>
-                        <td>
-                            <Link className="btn btn-danger" to="delete/2">
-                                delete
-                            </Link>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Skalo</td>
-                        <td>azetat@gmail.com</td>
-                        <td>azazeazd</td>
-                        <td>1</td>
-                        <td>12</td>
-                        <td>
-                            <Link className="btn btn-warning" to="update/3">
-                                Update
-                            </Link>
-                        </td>
-                        <td>
-                            <Link className="btn btn-danger" to="delete/3">
-                                delete
-                            </Link>
-                        </td>
-                    </tr>
+                    {categories.map((categorie, index) => (
+                        <tr key={index}>
+                            <td className="text-center w-25 ">{categorie.name}</td>
+                            <td style={{ width: '14%' }}>
+                                <button
+                                    className="btn btn-warning w-100"
+                                    onClick={() => {
+                                        setShowModal(true);
+                                    }}
+                                >
+                                    update
+                                </button>
+                            </td>
+                            <td style={{ width: '14%' }}>
+                                <button
+                                    className="btn btn-danger w-100"
+                                    onClick={() => {
+                                        setShowModal(true);
+                                    }}
+                                >
+                                    delete
+                                </button>
+                                <CustomModal
+                                    show={showModal}
+                                    handleClose={() => setShowModal(false)}
+                                    handleAction={() => handleDelete(categorie._id)}
+                                    title="Confirmation"
+                                >
+                                    Are you sure you want to delete this categorie ?
+                                </CustomModal>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </Table>
         </div>

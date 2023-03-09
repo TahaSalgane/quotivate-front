@@ -1,29 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
-import Data from 'assets/Categories.json';
+// import Data from 'assets/Categories.json';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faQuoteLeft, faComment } from '@fortawesome/free-solid-svg-icons';
 import { Container, Row, Col } from 'react-bootstrap/';
 import { Link } from 'react-router-dom';
+import QuoteInterface from 'types/interfaces/quote.interface';
+import CateogieInterface from 'types/interfaces/categorie.interface';
+import { getQuotes } from 'services/quotesService';
+import { getCategoris } from 'services/categoriesService';
 
 const Home: React.FC = () => {
+    const [quotes, setQuotes] = useState<QuoteInterface[]>([]);
+    const [categories, setCategories] = useState<CateogieInterface[]>([]);
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                const { data } = await getQuotes();
+                setQuotes(data);
+                console.log(quotes);
+                const res = await getCategoris();
+                setCategories(res.data);
+                console.log(categories);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        loadData();
+    }, []);
     return (
         <Container>
             <Row className="mt-5">
                 <Col md={8}>
-                    <h4>Populaire Quotes</h4>
-                    {Data.Quotes.map((quote: any) => (
-                        <Card key={quote.id} text="white" style={{ width: '90%' }} className="mb-2 bg-dark">
+                    <h4>Populadire Quotes</h4>
+                    {quotes.map((quote) => (
+                        <Card key={quote._id} text="white" style={{ width: '90%' }} className="mb-2 bg-dark">
                             <Card.Body>
-                                <FontAwesomeIcon icon={faQuoteLeft} />
+                                <FontAwesomeIcon icon={faQuoteLeft} className="fa-xs" />
                                 <Card.Text>{quote.content}</Card.Text>
                                 <Row>
                                     <Col md={10}>
                                         <div className="Author">-{quote.author}</div>
                                     </Col>
                                     <Col md={2}>
-                                        <span>{quote.nbrlike}</span> <FontAwesomeIcon icon={faHeart} />
-                                        <span className="m-2"> {quote.nbrcomment}</span>
+                                        <span>{quote.likes.length}</span> <FontAwesomeIcon icon={faHeart} />
+                                        <span className="m-2"> 1</span>
                                         <Link to={`/quote/{quote.id}`}>
                                             <FontAwesomeIcon icon={faComment} className="text-white" />
                                         </Link>
@@ -32,9 +53,11 @@ const Home: React.FC = () => {
                             </Card.Body>
                             <span style={{ marginLeft: '15px', color: '#999999', fontSize: '14px' }}>
                                 tags :&nbsp;&nbsp;
-                                <Link to={`/tag/${quote.categorie}`} className=" text-secondary">
-                                    {quote.categorie}
-                                </Link>
+                                {quote.tags.map((d: any, index) => (
+                                    <Link key={index} to={`/tag/${d.name}`} className="text-secondary">
+                                        {d.name}
+                                    </Link>
+                                ))}
                             </span>
                         </Card>
                     ))}
@@ -43,23 +66,19 @@ const Home: React.FC = () => {
                     <h3>Categories:</h3>
                     <Row>
                         <Col md={6}>
-                            {[...Data.categories]
-                                .splice(0, Math.ceil(Data.categories.length / 2))
-                                .map((categorie: any) => (
-                                    <Link to="gfbd" key={categorie.id}>
-                                        {categorie.name} <br />
-                                    </Link>
-                                ))}
+                            {[...categories].splice(0, Math.ceil(categories.length / 2)).map((categorie) => (
+                                <Link to="categorie.id" key={categorie._id}>
+                                    {categorie.name} <br />
+                                </Link>
+                            ))}
                         </Col>
                         <Col md={6}>
                             {/* {Data.categories.map((categorie: any) => ( */}
-                            {[...Data.categories]
-                                .splice(-Math.ceil(Data.categories.length / 2))
-                                .map((categorie: any) => (
-                                    <Link to="gfbd" key={categorie.id}>
-                                        {categorie.name} <br />
-                                    </Link>
-                                ))}
+                            {[...categories].splice(-Math.ceil(categories.length / 2)).map((categorie) => (
+                                <Link to={`$categorie.id}`} key={categorie._id}>
+                                    {categorie.name} <br />
+                                </Link>
+                            ))}
                         </Col>
                     </Row>
                 </Col>

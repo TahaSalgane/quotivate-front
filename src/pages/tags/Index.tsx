@@ -5,48 +5,77 @@ import CateogieInterface from 'types/interfaces/categorie.interface';
 import CustomModal from 'components/ui/costumeModal';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { AxiosResponse } from 'axios';
+import { HttpResponse } from 'types';
+import UpdateForm from 'pages/tags/components/UpdateForm';
+
 const schema = Yup.object().shape({
     name: Yup.string().required('Required'),
 });
 interface MyFormValues {
     name: string;
 }
-const submitForm = async (values: MyFormValues) => {
-    try {
-        const res = await createCategorie(values);
-        console.log(res);
-    } catch (excep) {
-        console.log(excep);
-    }
-    // console.log(values, process.env.REACT_APP_API_URL);
-};
-const Quotes: React.FC = () => {
+const TagsIndexPage: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
+    const [currentCategory, setcurrentCategory] = useState<CateogieInterface | null>(null);
     const [categories, setCategories] = useState<CateogieInterface[]>([]);
     const [showModal, setShowModal] = useState(false);
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
+
+    const openDeleteModal = (category: CateogieInterface) => {
+        setcurrentCategory(category);
+        setShowModal(true);
+    };
+    const openUpdateModal = (category: CateogieInterface) => {
+        setcurrentCategory(category);
+        setShowUpdateModal(true);
+    };
+
     useEffect(() => {
+        console.log('s');
         const loadData = async () => {
+            console.log('s2');
             try {
+                console.log('s3');
+
                 const res = await getCategoris();
+                console.log('s4', res);
+
                 setCategories(res.data);
-                console.log(categories);
+                console.log(res.data);
             } catch (error) {
+                console.log('s5');
+
                 console.log(error);
             }
         };
         loadData();
     }, []);
-
+    const submitForm = async (values: MyFormValues, actions: any) => {
+        try {
+            const { data }: AxiosResponse<HttpResponse<CateogieInterface>> = await createCategorie(values);
+            setCategories([...categories, data.realData!]);
+            setOpen(false);
+            actions.resetForm({
+                values: {
+                    name: '',
+                },
+            });
+        } catch (excep) {
+            console.log(excep);
+        }
+        // console.log(values, process.env.REACT_APP_API_URL);
+    };
     const handleDelete = async (id: string) => {
-        await deleteCategorie(id);
+        const sdd = await deleteCategorie(id);
+        const NewaCategorie = categories.filter((categorie) => categorie._id !== id);
+        setCategories(NewaCategorie);
+        console.log(categories);
         console.log(id);
+        console.log(sdd);
         setShowModal(false);
     };
-    const handlupdate = async (id: string) => {
-        await deleteCategorie(id);
-        console.log(id);
-        setShowModal(false);
-    };
+
     return (
         <div className="">
             <Button
@@ -99,7 +128,7 @@ const Quotes: React.FC = () => {
                                                         </Form.Group>
 
                                                         <div className="d-grid pt-3">
-                                                            <Button type="submit">Add Cateogire</Button>
+                                                            <Button type="submit">Add categorie</Button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -130,35 +159,56 @@ const Quotes: React.FC = () => {
                                 <button
                                     className="btn btn-warning w-100"
                                     onClick={() => {
-                                        setShowModal(true);
+                                        openUpdateModal(categorie);
                                     }}
                                 >
-                                    update
+                                    Update
                                 </button>
                             </td>
                             <td style={{ width: '14%' }}>
                                 <button
                                     className="btn btn-danger w-100"
                                     onClick={() => {
-                                        setShowModal(true);
+                                        openDeleteModal(categorie);
                                     }}
                                 >
                                     delete
                                 </button>
-                                <CustomModal
+                                {/* <CustomModal
                                     show={showModal}
                                     handleClose={() => setShowModal(false)}
                                     handleAction={() => handleDelete(categorie._id)}
                                     title="Confirmation"
                                 >
-                                    Are you sure you want to delete this categorie ?
-                                </CustomModal>
+                                    Are you sure you want to delete this categorie ?{categorie._id}
+                                </CustomModal> */}
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
+            <CustomModal
+                show={showModal}
+                handleClose={() => setShowModal(false)}
+                handleAction={() => handleDelete(currentCategory?._id!)}
+                title="Confirmation"
+            >
+                Are you sure you want to delete this categorie ?{currentCategory?._id!}
+            </CustomModal>
+            <CustomModal
+                show={showUpdateModal}
+                handleClose={() => setShowUpdateModal(false)}
+                // handleAction={() => handlupdate(currentCategory?._id!, 'sd')}
+                title="Update"
+            >
+                <UpdateForm
+                    setShowUpdateModal={setShowUpdateModal}
+                    categories={categories}
+                    setCategories={setCategories}
+                    currentCategory={currentCategory!}
+                />
+            </CustomModal>
         </div>
     );
 };
-export default Quotes;
+export default TagsIndexPage;

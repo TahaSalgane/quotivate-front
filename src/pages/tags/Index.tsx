@@ -32,20 +32,11 @@ const TagsIndexPage: React.FC = () => {
     };
 
     useEffect(() => {
-        console.log('s');
         const loadData = async () => {
-            console.log('s2');
             try {
-                console.log('s3');
-
                 const res = await getCategoris();
-                console.log('s4', res);
-
                 setCategories(res.data);
-                console.log(res.data);
             } catch (error) {
-                console.log('s5');
-
                 console.log(error);
             }
         };
@@ -192,8 +183,10 @@ const TagsIndexPage: React.FC = () => {
                 handleClose={() => setShowModal(false)}
                 handleAction={() => handleDelete(currentCategory?._id!)}
                 title="Confirmation"
+                btnText="Delete"
+                variant="danger"
             >
-                Are you sure you want to delete this categorie ?{currentCategory?._id!}
+                Are you sure you want to delete this categorie
             </CustomModal>
             <CustomModal
                 show={showUpdateModal}

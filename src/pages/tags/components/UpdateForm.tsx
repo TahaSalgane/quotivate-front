@@ -54,7 +54,7 @@ const UpdateForm: React.FC<Props> = ({ setShowUpdateModal, categories, setCatego
                         </Col>
                     </Row>
                     <div className="d-grid pt-3">
-                        <Button type="submit">Add categorie</Button>
+                        <Button type="submit">Update </Button>
                     </div>
                 </Form>
             )}

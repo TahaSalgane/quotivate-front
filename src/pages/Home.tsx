@@ -43,7 +43,7 @@ const Home: React.FC = () => {
                                         <div className="Author">-{quote.author}</div>
                                     </Col>
                                     <Col md={2}>
-                                        <span>{quote.likes.length}</span> <FontAwesomeIcon icon={faHeart} />
+                                        <span>{quote.likes?.length}</span> <FontAwesomeIcon icon={faHeart} />
                                         <span className="m-2"> 1</span>
                                         <Link to={`/quote/{quote.id}`}>
                                             <FontAwesomeIcon icon={faComment} className="text-white" />

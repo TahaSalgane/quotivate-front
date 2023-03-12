@@ -7,14 +7,17 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
+
+import useUserStore, { StoreStateInterface } from 'store/userStore';
+
 type props = {
     isNotDark?: boolean;
 };
 const Navbars: React.FC<props> = ({ isNotDark }: props) => {
-    const users = { isadmin: false };
+    const user = useUserStore((state: StoreStateInterface) => state.user);
     return (
         <Navbar bg={!isNotDark ? 'dark' : undefined} expand="lg" variant="dark" className="px-3">
-            <Navbar.Brand as={NavLink} to="/" className={`${users.isadmin ? 'headerbar-200 me-1' : 'me-5'}`}>
+            <Navbar.Brand as={NavLink} to="/" className={`${user?.isAdmin ? 'headerbar-200 me-1' : 'me-5'}`}>
                 Quotivate
             </Navbar.Brand>
             *
@@ -40,12 +43,18 @@ const Navbars: React.FC<props> = ({ isNotDark }: props) => {
                         Search
                     </Button>
                 </Form>
-                <Nav.Link as={NavLink} to="/register" href="#action1" className="text-white mx-3">
-                    <FontAwesomeIcon icon={faUserPlus} /> Register
-                </Nav.Link>
-                <Nav.Link href="#action1" className="text-white" as={NavLink} to="/login">
-                    <FontAwesomeIcon icon={faSignIn} /> Login
-                </Nav.Link>
+                {user ? (
+                    <div className="text-white">{user?.username}</div>
+                ) : (
+                    <>
+                        <Nav.Link as={NavLink} to="/register" href="#action1" className="text-white mx-3">
+                            <FontAwesomeIcon icon={faUserPlus} /> Register
+                        </Nav.Link>
+                        <Nav.Link href="#action1" className="text-white" as={NavLink} to="/login">
+                            <FontAwesomeIcon icon={faSignIn} /> Login
+                        </Nav.Link>
+                    </>
+                )}
             </Navbar.Collapse>
         </Navbar>
     );

@@ -9,6 +9,7 @@ import QuoteInterface from 'types/interfaces/quote.interface';
 import CateogieInterface from 'types/interfaces/categorie.interface';
 import { getQuotes } from 'services/quotesService';
 import { getCategoris } from 'services/categoriesService';
+import BreadCrumbs from 'components/ui/breadCrumbs';
 
 const Home: React.FC = () => {
     const [quotes, setQuotes] = useState<QuoteInterface[]>([]);
@@ -30,6 +31,14 @@ const Home: React.FC = () => {
     }, []);
     return (
         <Container>
+            <BreadCrumbs
+                data={[
+                    {
+                        text: 'Home',
+                        active: true,
+                    },
+                ]}
+            />
             <Row className="mt-5">
                 <Col md={8}>
                     <h4>Populadire Quotes</h4>

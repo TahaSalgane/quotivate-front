@@ -1,5 +1,10 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+
+import EventBus from 'utils/eventBus';
+
+import { PERSIST_KEY } from 'store/userStore';
+
 axios.interceptors.response.use(
     (response) => response,
     (error) => {
@@ -7,7 +12,7 @@ axios.interceptors.response.use(
         switch (true) {
             case ResponseStatus === 401:
                 // toast.error('Unauthorized!');
-                setTimeout(() => console.log('logout'), 1000);
+                setTimeout(() => EventBus.dispatch('logout'), 1000);
                 return Promise.reject();
                 break;
             case ResponseStatus === 403:
@@ -23,7 +28,7 @@ axios.interceptors.response.use(
 axios.interceptors.request.use(
     (config) => {
         if (config.headers.authorization !== false) {
-            const token = '';
+            const token = localStorage.getItem(PERSIST_KEY);
             if (token) {
                 config.headers.Authorization = 'Bearer ' + token;
             }

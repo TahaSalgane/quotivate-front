@@ -1,10 +1,9 @@
 import React from 'react';
 import { Col, Button, Row, Card } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-
 import { registerUser } from 'services/authService';
 
 const schema = Yup.object().shape({
@@ -25,6 +24,7 @@ const submitForm = async (values: MyFormValues) => {
     try {
         const res = await registerUser(values);
         console.log(res);
+        return <Navigate to="/login" />;
     } catch (excep) {
         console.log(excep);
     }

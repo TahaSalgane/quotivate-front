@@ -10,6 +10,7 @@ import CustomModal from 'components/ui/costumeModal';
 import UpdateForm from 'pages/quotes/compontents/UpdateForm';
 import CategorieInterface from 'types/interfaces/categorie.interface';
 import { getCategoris } from 'services/categoriesService';
+import BreadCrumbs from 'components/ui/breadCrumbs';
 
 const schema = Yup.object().shape({
     author: Yup.string().required('Required'),
@@ -85,6 +86,18 @@ const Quotes: React.FC = () => {
     };
     return (
         <div className="">
+            <BreadCrumbs
+                data={[
+                    {
+                        text: 'Home',
+                        path: '/',
+                    },
+                    {
+                        text: 'Quotes',
+                        active: true,
+                    },
+                ]}
+            />
             <Button
                 className="m-4"
                 onClick={() => setOpen(!open)}

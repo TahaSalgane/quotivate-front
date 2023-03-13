@@ -7,6 +7,8 @@ import Sidebar from 'components/core/Layout/Sidebar';
 import Footer from 'components/core/Layout/Footer';
 import { Container } from 'react-bootstrap';
 
+import useUserStore, { StoreStateInterface } from 'store/userStore';
+
 const MyGridContainer = styled.div`
     display: grid;
     grid-template-columns: 200px 1fr;
@@ -27,15 +29,16 @@ const MyGridContainer = styled.div`
 
 type Props = {
     isNotDark?: boolean;
-    isAdmin?: boolean;
     layoutDesign?: string;
+    userlogOut: () => void;
 };
 
-const Index: React.FC<Props> = ({ isNotDark, isAdmin, layoutDesign }: Props) => {
+const Index: React.FC<Props> = ({ isNotDark, layoutDesign, userlogOut }: Props) => {
+    const user = useUserStore((state: StoreStateInterface) => state.user);
     return (
         <div className={layoutDesign}>
-            <Header isNotDark={isNotDark} />
-            {isAdmin ? (
+            <Header isNotDark={isNotDark} userlogOut={userlogOut} />
+            {user?.isAdmin ? (
                 <MyGridContainer>
                     <div className="my-sidebar">
                         <Sidebar />
@@ -55,9 +58,4 @@ const Index: React.FC<Props> = ({ isNotDark, isAdmin, layoutDesign }: Props) => 
         </div>
     );
 };
-
-Index.defaultProps = {
-    isAdmin: true,
-};
-
 export default Index;

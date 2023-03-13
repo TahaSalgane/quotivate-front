@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Card from 'react-bootstrap/Card';
 // import Data from 'assets/Categories.json';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faQuoteLeft, faComment } from '@fortawesome/free-solid-svg-icons';
 import { Container, Row, Col } from 'react-bootstrap/';
 import { Link } from 'react-router-dom';
 import QuoteInterface from 'types/interfaces/quote.interface';
@@ -10,7 +7,7 @@ import CateogieInterface from 'types/interfaces/categorie.interface';
 import { getQuotes } from 'services/quotesService';
 import { getCategoris } from 'services/categoriesService';
 import BreadCrumbs from 'components/ui/breadCrumbs';
-
+import { Quote } from 'pages/Quote';
 const Home: React.FC = () => {
     const [quotes, setQuotes] = useState<QuoteInterface[]>([]);
     const [categories, setCategories] = useState<CateogieInterface[]>([]);
@@ -43,32 +40,7 @@ const Home: React.FC = () => {
                 <Col md={8}>
                     <h4>Populadire Quotes</h4>
                     {quotes.map((quote) => (
-                        <Card key={quote._id} text="white" style={{ width: '90%' }} className="mb-2 bg-dark">
-                            <Card.Body>
-                                <FontAwesomeIcon icon={faQuoteLeft} className="fa-xs" />
-                                <Card.Text>{quote.content}</Card.Text>
-                                <Row>
-                                    <Col md={10}>
-                                        <div className="Author">-{quote.author}</div>
-                                    </Col>
-                                    <Col md={2}>
-                                        <span>{quote.likes?.length}</span> <FontAwesomeIcon icon={faHeart} />
-                                        <span className="m-2"> 1</span>
-                                        <Link to={`/quote/{quote.id}`}>
-                                            <FontAwesomeIcon icon={faComment} className="text-white" />
-                                        </Link>
-                                    </Col>
-                                </Row>
-                            </Card.Body>
-                            <span style={{ marginLeft: '15px', color: '#999999', fontSize: '14px' }}>
-                                tags :&nbsp;&nbsp;
-                                {quote.tags.map((d: any, index) => (
-                                    <Link key={index} to={`/tag/${d.name}`} className="text-secondary">
-                                        {d.name}
-                                    </Link>
-                                ))}
-                            </span>
-                        </Card>
+                        <Quote key={quote._id} data={quote} quotes={quotes} setQuotes={setQuotes} />
                     ))}
                 </Col>
                 <Col md={4}>

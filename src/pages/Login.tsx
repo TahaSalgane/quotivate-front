@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from 'services/authService';
 import useUserStore, { StoreStateInterface, PERSIST_KEY } from 'store/userStore';
 import getUser from 'utils/helper';
+import { ToastContainer, toast } from 'react-toastify';
 
 const schema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Required'),
@@ -31,12 +32,14 @@ const Login: React.FC = () => {
             setUser(userDecoded!);
             setLoadingFalse();
             navigation('/');
+            toast.success('successful', { autoClose: 3000 });
         } catch (excep) {
             setLoadingFalse();
             console.log(excep);
         }
         // console.log(values, process.env.REACT_APP_API_URL);
     };
+    const notify = () => toast('Wow so easy!');
 
     return (
         <Formik
@@ -49,6 +52,9 @@ const Login: React.FC = () => {
         >
             {({ handleSubmit, handleChange, values, touched, errors }) => (
                 <Form noValidate onSubmit={handleSubmit}>
+                    <button onClick={notify}>Notify!</button>
+                    <ToastContainer />
+
                     <Row className="vh-100 d-flex justify-content-center pt-3">
                         <Col md={8} lg={6} xs={12}>
                             <div className="border border-2 border-primary"></div>

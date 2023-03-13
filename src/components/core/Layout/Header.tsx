@@ -1,19 +1,15 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Button, Form, Nav, Navbar, NavDropdown, Dropdown, DropdownButton } from 'react-bootstrap/';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
-
 import useUserStore, { StoreStateInterface } from 'store/userStore';
 
 type props = {
     isNotDark?: boolean;
+    userlogOut?: any;
 };
-const Navbars: React.FC<props> = ({ isNotDark }: props) => {
+const Navbars: React.FC<props> = ({ isNotDark, userlogOut }: props) => {
     const user = useUserStore((state: StoreStateInterface) => state.user);
     return (
         <Navbar bg={!isNotDark ? 'dark' : undefined} expand="lg" variant="dark" className="px-3">
@@ -44,7 +40,12 @@ const Navbars: React.FC<props> = ({ isNotDark }: props) => {
                     </Button>
                 </Form>
                 {user ? (
-                    <div className="text-white">{user?.username}</div>
+                    <DropdownButton variant="dark" id="dropdown-item-button" title={user.username}>
+                        <Dropdown.Item as="button">profile</Dropdown.Item> <Dropdown.Divider />
+                        <Dropdown.Item as="button" onClick={() => userlogOut()}>
+                            Logout
+                        </Dropdown.Item>
+                    </DropdownButton>
                 ) : (
                     <>
                         <Nav.Link as={NavLink} to="/register" href="#action1" className="text-white mx-3">

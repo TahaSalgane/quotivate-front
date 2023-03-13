@@ -5,6 +5,7 @@ import { Link, Navigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { registerUser } from 'services/authService';
+import { toast } from 'react-toastify';
 
 const schema = Yup.object().shape({
     username: Yup.string().min(5, 'Must be 5 characters or more').required('Required'),
@@ -20,17 +21,20 @@ interface MyFormValues {
     password: string;
     confirmpassword: string;
 }
-const submitForm = async (values: MyFormValues) => {
-    try {
-        const res = await registerUser(values);
-        console.log(res);
-        return <Navigate to="/login" />;
-    } catch (excep) {
-        console.log(excep);
-    }
-    // console.log(values, process.env.REACT_APP_API_URL);
-};
+
 const Register: React.FC = () => {
+    const submitForm = async (values: MyFormValues) => {
+        try {
+            const res = await registerUser(values);
+            console.log(res);
+            toast.success('Register has been successful !');
+            return <Navigate to="/login" />;
+        } catch (excep) {
+            console.log(excep);
+        }
+        // console.log(values, process.env.REACT_APP_API_URL);
+    };
+
     return (
         <Formik
             validationSchema={schema}

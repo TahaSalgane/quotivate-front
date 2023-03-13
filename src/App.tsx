@@ -1,6 +1,8 @@
 import React, { FC, useEffect, useCallback } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 
+import { ToastContainer } from 'react-toastify';
+
 import Layout from 'components/core/Layout/Index';
 import PageGuard from 'hoc/PageGuard';
 
@@ -26,6 +28,7 @@ const App: FC = () => {
     const clearUser = useUserStore((state: StoreStateInterface) => state.clearUser);
 
     const logOut = useCallback(() => {
+        console.log('called');
         serviceLogOut();
         clearUser();
     }, [user]);
@@ -54,8 +57,9 @@ const App: FC = () => {
     return (
         <>
             <LoadingBackDropSpin />
+            <ToastContainer />
             <Routes>
-                <Route element={<Layout layoutDesign="backback" />}>
+                <Route element={<Layout userlogOut={logOut} layoutDesign="backback" />}>
                     <Route path="/" element={<Home />}></Route>
                     <Route
                         path="admin/users"
@@ -70,7 +74,7 @@ const App: FC = () => {
                     <Route path="admin/dashboard" element={<Dashboard />} />
                     <Route path="admin/categories" element={<TagsIndexPage />} />
                 </Route>
-                <Route element={<Layout layoutDesign="reglogbackground" isNotDark />}>
+                <Route element={<Layout userlogOut={logOut} layoutDesign="reglogbackground" isNotDark />}>
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
                     <Route path="forgotpassword" element={<Forgotpassword />} />

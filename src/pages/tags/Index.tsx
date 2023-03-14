@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Button, Row, Card, Form, Collapse, Table } from 'react-bootstrap';
-import { getCategoris, deleteCategorie, createCategorie } from 'services/categoriesService';
-import CateogieInterface from 'types/interfaces/categorie.interface';
+import { getTags, deleteTag, createTag } from 'services/tagsService';
+import CateogieInterface from 'types/interfaces/tag.interface';
 import CustomModal from 'components/ui/costumeModal';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { AxiosResponse } from 'axios';
 import { HttpResponse } from 'types';
 import UpdateForm from 'pages/tags/components/UpdateForm';
+import { toast } from 'react-toastify';
 
 const schema = Yup.object().shape({
     name: Yup.string().required('Required'),
@@ -18,7 +19,7 @@ interface MyFormValues {
 const TagsIndexPage: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
     const [currentCategory, setcurrentCategory] = useState<CateogieInterface | null>(null);
-    const [categories, setCategories] = useState<CateogieInterface[]>([]);
+    const [tags, settags] = useState<CateogieInterface[]>([]);
     const [showModal, setShowModal] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
 
@@ -34,8 +35,8 @@ const TagsIndexPage: React.FC = () => {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const res = await getCategoris();
-                setCategories(res.data);
+                const res = await getTags();
+                settags(res.data);
             } catch (error) {
                 console.log(error);
             }
@@ -44,27 +45,29 @@ const TagsIndexPage: React.FC = () => {
     }, []);
     const submitForm = async (values: MyFormValues, actions: any) => {
         try {
-            const { data }: AxiosResponse<HttpResponse<CateogieInterface>> = await createCategorie(values);
-            setCategories([...categories, data.realData!]);
+            const { data }: AxiosResponse<HttpResponse<CateogieInterface>> = await createTag(values);
+            settags([...tags, data.realData!]);
             setOpen(false);
             actions.resetForm({
                 values: {
                     name: '',
                 },
             });
+            toast.success('Tag created successfully', { autoClose: 2000 });
         } catch (excep) {
             console.log(excep);
         }
         // console.log(values, process.env.REACT_APP_API_URL);
     };
     const handleDelete = async (id: string) => {
-        const sdd = await deleteCategorie(id);
-        const NewaCategorie = categories.filter((categorie) => categorie._id !== id);
-        setCategories(NewaCategorie);
-        console.log(categories);
+        const sdd = await deleteTag(id);
+        const Newatag = tags.filter((tag) => tag._id !== id);
+        settags(Newatag);
+        console.log(tags);
         console.log(id);
         console.log(sdd);
         setShowModal(false);
+        toast.success('The tag has been removed successfully', { autoClose: 2000 });
     };
 
     return (
@@ -75,7 +78,7 @@ const TagsIndexPage: React.FC = () => {
                 aria-controls="example-collapse-text"
                 aria-expanded={open}
             >
-                Add Categorie
+                Add tag
             </Button>
             <Collapse in={open}>
                 <div id="example-collapse-text">
@@ -98,7 +101,7 @@ const TagsIndexPage: React.FC = () => {
                                             <Card.Body>
                                                 <div className="mb-3 mt-md-4">
                                                     <h2 className="fw-bold mb-2 text-center text-uppercase text-dark">
-                                                        Add Categorie
+                                                        Add tag
                                                     </h2>
 
                                                     <div className="mb-3">
@@ -119,7 +122,7 @@ const TagsIndexPage: React.FC = () => {
                                                         </Form.Group>
 
                                                         <div className="d-grid pt-3">
-                                                            <Button type="submit">Add categorie</Button>
+                                                            <Button type="submit">Add tag</Button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -132,7 +135,7 @@ const TagsIndexPage: React.FC = () => {
                     </Formik>
                 </div>
             </Collapse>
-            <h2 className="m-5">All Quotes</h2>
+            <h2 className="m-5">All Tags</h2>
             <Table style={{ width: '65%' }} className="m-4 text-black" striped bordered hover variant="white">
                 <thead>
                     <tr>
@@ -143,14 +146,14 @@ const TagsIndexPage: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {categories.map((categorie, index) => (
+                    {tags.map((tag, index) => (
                         <tr key={index}>
-                            <td className="text-center w-25 ">{categorie.name}</td>
+                            <td className="text-center w-25 ">{tag.name}</td>
                             <td style={{ width: '14%' }}>
                                 <button
                                     className="btn btn-warning w-100"
                                     onClick={() => {
-                                        openUpdateModal(categorie);
+                                        openUpdateModal(tag);
                                     }}
                                 >
                                     Update
@@ -160,7 +163,7 @@ const TagsIndexPage: React.FC = () => {
                                 <button
                                     className="btn btn-danger w-100"
                                     onClick={() => {
-                                        openDeleteModal(categorie);
+                                        openDeleteModal(tag);
                                     }}
                                 >
                                     delete
@@ -168,10 +171,10 @@ const TagsIndexPage: React.FC = () => {
                                 {/* <CustomModal
                                     show={showModal}
                                     handleClose={() => setShowModal(false)}
-                                    handleAction={() => handleDelete(categorie._id)}
+                                    handleAction={() => handleDelete(tag._id)}
                                     title="Confirmation"
                                 >
-                                    Are you sure you want to delete this categorie ?{categorie._id}
+                                    Are you sure you want to delete this tag ?{tag._id}
                                 </CustomModal> */}
                             </td>
                         </tr>
@@ -186,7 +189,7 @@ const TagsIndexPage: React.FC = () => {
                 btnText="Delete"
                 variant="danger"
             >
-                Are you sure you want to delete this categorie
+                Are you sure you want to delete this tag
             </CustomModal>
             <CustomModal
                 show={showUpdateModal}
@@ -196,8 +199,8 @@ const TagsIndexPage: React.FC = () => {
             >
                 <UpdateForm
                     setShowUpdateModal={setShowUpdateModal}
-                    categories={categories}
-                    setCategories={setCategories}
+                    tags={tags}
+                    settags={settags}
                     currentCategory={currentCategory!}
                 />
             </CustomModal>

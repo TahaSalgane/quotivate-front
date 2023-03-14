@@ -8,10 +8,10 @@ import { HttpResponse } from 'types';
 import * as Yup from 'yup';
 import CustomModal from 'components/ui/costumeModal';
 import UpdateForm from 'pages/quotes/compontents/UpdateForm';
-import CategorieInterface from 'types/interfaces/categorie.interface';
-import { getCategoris } from 'services/categoriesService';
+import TagInterface from 'types/interfaces/tag.interface';
+import { getTags } from 'services/tagsService';
 import BreadCrumbs from 'components/ui/breadCrumbs';
-
+import { toast } from 'react-toastify';
 const schema = Yup.object().shape({
     author: Yup.string().required('Required'),
     content: Yup.string().required('Required'),
@@ -23,7 +23,7 @@ interface MyFormValues {
     tags: string[];
 }
 const Quotes: React.FC = () => {
-    const [tags, setTags] = useState<CategorieInterface[]>([]);
+    const [tags, setTags] = useState<TagInterface[]>([]);
     const [quotes, setQuotes] = useState<QuoteInterface[]>([]);
     const [currentQuote, setCurrentQuote] = useState<QuoteInterface | null>(null);
     const [open, setOpen] = useState<boolean>(false);
@@ -47,7 +47,7 @@ const Quotes: React.FC = () => {
                 console.log(error);
             }
             try {
-                const { data } = await getCategoris();
+                const { data } = await getTags();
                 setTags(data);
             } catch (error) {
                 console.log(error);
@@ -70,6 +70,7 @@ const Quotes: React.FC = () => {
                     content: '',
                 },
             });
+            toast.success('The tag has been updated successfully', { autoClose: 2000 });
         } catch (excep) {
             console.log(excep);
         }
@@ -130,7 +131,7 @@ const Quotes: React.FC = () => {
                                             <Card.Body>
                                                 <div className="mb-3 mt-md-4">
                                                     <h2 className="fw-bold mb-2 text-center text-uppercase text-dark">
-                                                        Add Categorie
+                                                        Add tags
                                                     </h2>
 
                                                     <div className="mb-3">
@@ -163,7 +164,7 @@ const Quotes: React.FC = () => {
                                                                 multiple
                                                             >
                                                                 <option>Select..</option>
-                                                                {tags.map((item: CategorieInterface) => (
+                                                                {tags.map((item: TagInterface) => (
                                                                     <option key={item._id} value={item._id}>
                                                                         {item.name}
                                                                     </option>
@@ -249,10 +250,10 @@ const Quotes: React.FC = () => {
                                 {/* <CustomModal
                                     show={showModal}
                                     handleClose={() => setShowModal(false)}
-                                    handleAction={() => handleDelete(categorie._id)}
+                                    handleAction={() => handleDelete(tags._id)}
                                     title="Confirmation"
                                 >
-                                    Are you sure you want to delete this categorie ?{categorie._id}
+                                    Are you sure you want to delete this tags ?{tags._id}
                                 </CustomModal> */}
                             </td>
                         </tr>

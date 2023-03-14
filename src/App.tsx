@@ -62,17 +62,17 @@ const App: FC = () => {
                 <Route element={<Layout userlogOut={logOut} layoutDesign="backback" />}>
                     <Route path="/" element={<Home />}></Route>
                     <Route
-                        path="admin/users"
+                        path="/admin/users"
                         element={
                             <PageGuard guarded isAdmin>
                                 <Users />
                             </PageGuard>
                         }
                     />
-                    <Route path="admin/quotes" element={<QuotesIndexPage />} />
-                    <Route path="tag/:tag" element={<Tag />} />
-                    <Route path="admin/dashboard" element={<Dashboard />} />
-                    <Route path="admin/categories" element={<TagsIndexPage />} />
+                    <Route path="/admin/quotes" element={<QuotesIndexPage />} />
+                    <Route path="/tag/:tag" element={<Tag />} />
+                    <Route path="/admin/dashboard" element={<Dashboard />} />
+                    <Route path="/admin/tags" element={<TagsIndexPage />} />
                 </Route>
                 <Route element={<Layout userlogOut={logOut} layoutDesign="reglogbackground" isNotDark />}>
                     <Route path="login" element={<Login />} />

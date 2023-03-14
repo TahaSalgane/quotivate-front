@@ -2,28 +2,28 @@ import React from 'react';
 import { Formik } from 'formik';
 import { Col, Button, Row, Form } from 'react-bootstrap';
 import * as Yup from 'yup';
-import { updateCategorie } from 'services/categoriesService';
-import CategorieInterface from 'types/interfaces/categorie.interface';
+import { updateTag } from 'services/tagsService';
+import TagInterface from 'types/interfaces/tag.interface';
+import { toast } from 'react-toastify';
 
 const schema = Yup.object().shape({
     name: Yup.string().required('Required'),
 });
 type Props = {
     setShowUpdateModal: (state: boolean) => void;
-    categories: CategorieInterface[];
-    setCategories: (data: CategorieInterface[]) => void;
-    currentCategory: CategorieInterface;
+    tags: TagInterface[];
+    settags: (data: TagInterface[]) => void;
+    currentCategory: TagInterface;
 };
-const UpdateForm: React.FC<Props> = ({ setShowUpdateModal, categories, setCategories, currentCategory }: Props) => {
-    const submitForm = async (values: CategorieInterface) => {
-        await updateCategorie(values);
-        const index = categories.findIndex(
-            (categorie: CategorieInterface) => categorie._id.toString() === values._id.toString(),
-        );
-        const listUpdate = [...categories];
+const UpdateForm: React.FC<Props> = ({ setShowUpdateModal, tags, settags, currentCategory }: Props) => {
+    const submitForm = async (values: TagInterface) => {
+        await updateTag(values);
+        const index = tags.findIndex((tag: TagInterface) => tag._id.toString() === values._id.toString());
+        const listUpdate = [...tags];
         listUpdate[index] = values;
-        setCategories(listUpdate);
+        settags(listUpdate);
         setShowUpdateModal(false);
+        toast.success('The tag has been updated successfully', { autoClose: 2000 });
     };
     return (
         <Formik

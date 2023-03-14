@@ -1,31 +1,53 @@
 import React, { useEffect, useState } from 'react';
-// import Data from 'assets/Categories.json';
+// import Data from 'assets/tag.json';
 import { Container, Row, Col } from 'react-bootstrap/';
 import { Link } from 'react-router-dom';
 import QuoteInterface from 'types/interfaces/quote.interface';
-import CateogieInterface from 'types/interfaces/categorie.interface';
-import { getQuotes } from 'services/quotesService';
-import { getCategoris } from 'services/categoriesService';
+import CateogieInterface from 'types/interfaces/tag.interface';
+import { getQuotes, getLatestQuotes } from 'services/quotesService';
+import { getTags } from 'services/tagsService';
 import BreadCrumbs from 'components/ui/breadCrumbs';
 import { Quote } from 'pages/Quote';
 const Home: React.FC = () => {
     const [quotes, setQuotes] = useState<QuoteInterface[]>([]);
-    const [categories, setCategories] = useState<CateogieInterface[]>([]);
+    const [quoteHeader, setQuoteHeader] = useState<string>('');
+    const [tag, setTag] = useState<CateogieInterface[]>([]);
     useEffect(() => {
         const loadData = async () => {
             try {
+                setQuoteHeader('Populaire Quotes');
                 const { data } = await getQuotes();
                 setQuotes(data);
                 console.log(quotes);
-                const res = await getCategoris();
-                setCategories(res.data);
-                console.log(categories);
+                const res = await getTags();
+                setTag(res.data);
+                console.log(tag);
             } catch (error) {
                 console.log(error);
             }
         };
         loadData();
     }, []);
+    const latestQuotes = async () => {
+        try {
+            setQuoteHeader('Latest Quotes');
+            const { data } = await getLatestQuotes();
+            setQuotes(data);
+            console.log(quotes);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const PopulaireQuotes = async () => {
+        try {
+            setQuoteHeader('Populaire Quotes');
+            const { data } = await getQuotes();
+            setQuotes(data);
+            console.log(quotes);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <Container>
             <BreadCrumbs
@@ -38,26 +60,32 @@ const Home: React.FC = () => {
             />
             <Row className="mt-5">
                 <Col md={8}>
-                    <h4>Populadire Quotes</h4>
+                    <h1>{quoteHeader}</h1>
+                    <button onClick={PopulaireQuotes}>
+                        <h4>Populaire Quotes</h4>
+                    </button>{' '}
+                    <button onClick={latestQuotes}>
+                        <h4>Latest Quotes</h4>
+                    </button>
                     {quotes.map((quote) => (
                         <Quote key={quote._id} data={quote} quotes={quotes} setQuotes={setQuotes} />
                     ))}
                 </Col>
                 <Col md={4}>
-                    <h3>Categories:</h3>
+                    <h3>tag:</h3>
                     <Row>
                         <Col md={6}>
-                            {[...categories].splice(0, Math.ceil(categories.length / 2)).map((categorie) => (
-                                <Link to="categorie.id" key={categorie._id}>
-                                    {categorie.name} <br />
+                            {[...tag].splice(0, Math.ceil(tag.length / 2)).map((tag) => (
+                                <Link to="tag.id" key={tag._id}>
+                                    {tag.name} <br />
                                 </Link>
                             ))}
                         </Col>
                         <Col md={6}>
-                            {/* {Data.categories.map((categorie: any) => ( */}
-                            {[...categories].splice(-Math.ceil(categories.length / 2)).map((categorie) => (
-                                <Link to={`$categorie.id}`} key={categorie._id}>
-                                    {categorie.name} <br />
+                            {/* {Data.tag.map((tag: any) => ( */}
+                            {[...tag].splice(-Math.ceil(tag.length / 2)).map((tag) => (
+                                <Link to={`$tag.id}`} key={tag._id}>
+                                    {tag.name} <br />
                                 </Link>
                             ))}
                         </Col>

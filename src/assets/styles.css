@@ -52,3 +52,9 @@
         width: auto;
     }
 }
+
+.nav .links:hover {
+    background-color: green; /*will change background-color of element on hover */
+    color: rgb(255, 0, 0); /*will change color of text within the element on hover */
+    z-index: 999;
+}

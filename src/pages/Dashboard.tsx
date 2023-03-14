@@ -63,14 +63,14 @@ const Dashboard = () => {
                                         </div>
                                     </Col>
                                     <Col xs="7">
-                                        <h4 className="card-category">Categories</h4>
+                                        <h4 className="card-category">tags</h4>
                                         <Card.Title as="h4">5</Card.Title>
                                     </Col>
                                 </Row>
                             </Card.Body>
                             <Card.Text className="mt-1 m-2 text-end">
-                                <Link to="/admin/categories" className="btn btn-dark w-100">
-                                    See all Categories
+                                <Link to="/admin/tags" className="btn btn-dark w-100">
+                                    See all tags
                                 </Link>
                             </Card.Text>
                         </Card>

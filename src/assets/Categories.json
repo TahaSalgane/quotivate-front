@@ -1,5 +1,5 @@
 {
-    "categories": [
+    "tagss": [
         { "id": 1, "name": "love" },
         { "id": 2, "name": "life" },
         { "id": 3, "name": "faith" },
@@ -10,7 +10,7 @@
     "Quotes": [
         {
             "id": 1,
-            "categorie": "love",
+            "tags": "love",
             "author": "Marilyn Monroe",
             "nbrlike": 15,
             "nbrcomment": 7,
@@ -18,7 +18,7 @@
         },
         {
             "id": 2,
-            "categorie": "life",
+            "tags": "life",
             "author": "Oscar Wilde",
             "nbrlike": 65,
             "nbrcomment": 1,
@@ -26,7 +26,7 @@
         },
         {
             "id": 3,
-            "categorie": "faith",
+            "tags": "faith",
             "author": "John Lennon",
             "nbrlike": 15,
             "nbrcomment": 3,
@@ -34,7 +34,7 @@
         },
         {
             "id": 4,
-            "categorie": "faith",
+            "tags": "faith",
             "author": "John Lennon",
             "nbrlike": 15,
             "nbrcomment": 3,
@@ -42,7 +42,7 @@
         },
         {
             "id": 5,
-            "categorie": "faith",
+            "tags": "faith",
             "author": "John Lennon",
             "nbrlike": 15,
             "nbrcomment": 3,
@@ -50,7 +50,7 @@
         },
         {
             "id": 6,
-            "categorie": "faith",
+            "tags": "faith",
             "author": "John Lennon",
             "nbrlike": 15,
             "nbrcomment": 3,
@@ -58,7 +58,7 @@
         },
         {
             "id": 7,
-            "categorie": "faith",
+            "tags": "faith",
             "author": "John Lennon",
             "nbrlike": 15,
             "nbrcomment": 3,

@@ -41,7 +41,7 @@ const Index: React.FC<Props> = ({ isNotDark, layoutDesign, userlogOut }: Props) 
             {user?.isAdmin ? (
                 <MyGridContainer>
                     <div className="my-sidebar">
-                        <Sidebar />
+                        <Sidebar userlogOut={userlogOut} />
                     </div>
                     <div className="my-content">
                         <Container fluid className="unContainer">

@@ -4,7 +4,7 @@ import { Col, Button, Row, Form } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { updateQuote } from 'services/quotesService';
 import QuoteInterface from 'types/interfaces/quote.interface';
-import CategorieInterface from 'types/interfaces/categorie.interface';
+import TagInterface from 'types/interfaces/tag.interface';
 
 const schema = Yup.object().shape({
     author: Yup.string().required('Required'),
@@ -13,7 +13,7 @@ const schema = Yup.object().shape({
 });
 type Props = {
     setShowUpdateModal: (state: boolean) => void;
-    tags: CategorieInterface[];
+    tags: TagInterface[];
     quotes: QuoteInterface[];
     setQuotes: (data: QuoteInterface[]) => void;
     currentQuote: QuoteInterface;
@@ -23,9 +23,7 @@ const UpdateForm: React.FC<Props> = ({ setShowUpdateModal, quotes, setQuotes, cu
         const {
             data: { realData },
         } = await updateQuote(values);
-        const index = quotes.findIndex(
-            (categorie: QuoteInterface) => categorie._id.toString() === values._id.toString(),
-        );
+        const index = quotes.findIndex((tags: QuoteInterface) => tags._id.toString() === values._id.toString());
         const listUpdate = [...quotes];
         listUpdate[index] = realData;
         setQuotes(listUpdate);
@@ -39,7 +37,7 @@ const UpdateForm: React.FC<Props> = ({ setShowUpdateModal, quotes, setQuotes, cu
                 _id: currentQuote._id,
                 author: currentQuote.author,
                 content: currentQuote.content,
-                tags: (currentQuote.tags as CategorieInterface[]).map((d: CategorieInterface) => d._id.toString()),
+                tags: (currentQuote.tags as TagInterface[]).map((d: TagInterface) => d._id.toString()),
             }}
         >
             {({ handleSubmit, handleChange, values, touched, errors }) => (
@@ -86,7 +84,7 @@ const UpdateForm: React.FC<Props> = ({ setShowUpdateModal, quotes, setQuotes, cu
                                     multiple
                                 >
                                     <option>Select..</option>
-                                    {tags.map((item: CategorieInterface) => (
+                                    {tags.map((item: TagInterface) => (
                                         <option key={item._id} value={item._id}>
                                             {item.name}
                                         </option>

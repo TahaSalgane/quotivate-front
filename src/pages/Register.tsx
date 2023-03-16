@@ -1,31 +1,16 @@
 import React, { useState } from 'react';
-import { Col, Button, Row, Card, Alert } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
+import { Col, Button, Row, Card, Alert, Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { registerUser } from 'services/authService';
 import { toast } from 'react-toastify';
-
-const schema = Yup.object().shape({
-    username: Yup.string().min(5, 'Must be 5 characters or more').required('Required'),
-    email: Yup.string().email('Invalid email address').required('Required'),
-    password: Yup.string().min(5, 'Must be 5 characters or more').required('required'),
-    confirmpassword: Yup.string()
-        .oneOf([Yup.ref('password'), null as any], 'password not matched')
-        .required('required'),
-});
-interface MyFormValues {
-    username: string;
-    email: string;
-    password: string;
-    confirmpassword: string;
-}
+import { registerSchema } from 'utils/YupValidation';
+import { registerFormValues } from 'types/interfaces/formValidate.interface';
 
 const Register: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string>('');
     const navigation = useNavigate();
-    const submitForm = async (values: MyFormValues) => {
+    const submitForm = async (values: registerFormValues) => {
         try {
             const res = await registerUser(values);
             console.log(res);
@@ -35,12 +20,11 @@ const Register: React.FC = () => {
             setErrorMessage(excep.message);
             toast.error(excep.message);
         }
-        // console.log(values, process.env.REACT_APP_API_URL);
     };
 
     return (
         <Formik
-            validationSchema={schema}
+            validationSchema={registerSchema}
             onSubmit={submitForm}
             initialValues={{
                 username: '',

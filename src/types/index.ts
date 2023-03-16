@@ -33,3 +33,13 @@ export interface UserAuthInterface extends UserInterface {
     iat?: number;
     exp?: number;
 }
+
+export type ModalProps = {
+    show: boolean;
+    handleClose: () => void;
+    handleAction?: () => void;
+    title: string;
+    btnText?: string;
+    variant?: string;
+    children: React.ReactNode | string;
+};

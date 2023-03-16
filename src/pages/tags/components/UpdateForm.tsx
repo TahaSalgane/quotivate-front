@@ -1,24 +1,21 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { Col, Button, Row, Form } from 'react-bootstrap';
-import * as Yup from 'yup';
 import { updateTag } from 'services/tagsService';
-import TagInterface from 'types/interfaces/tag.interface';
+import { TagFormValues } from 'types/interfaces/formValidate.interface';
 import { toast } from 'react-toastify';
+import { tagSchema } from 'utils/YupValidation';
 
-const schema = Yup.object().shape({
-    name: Yup.string().required('Required'),
-});
 type Props = {
     setShowUpdateModal: (state: boolean) => void;
-    tags: TagInterface[];
-    settags: (data: TagInterface[]) => void;
-    currentCategory: TagInterface;
+    tags: TagFormValues[];
+    settags: (data: TagFormValues[]) => void;
+    currentCategory: TagFormValues;
 };
 const UpdateForm: React.FC<Props> = ({ setShowUpdateModal, tags, settags, currentCategory }: Props) => {
-    const submitForm = async (values: TagInterface) => {
+    const submitForm = async (values: TagFormValues) => {
         await updateTag(values);
-        const index = tags.findIndex((tag: TagInterface) => tag._id.toString() === values._id.toString());
+        const index = tags.findIndex((tag: TagFormValues) => tag._id!.toString() === values._id!.toString());
         const listUpdate = [...tags];
         listUpdate[index] = values;
         settags(listUpdate);
@@ -27,7 +24,7 @@ const UpdateForm: React.FC<Props> = ({ setShowUpdateModal, tags, settags, curren
     };
     return (
         <Formik
-            validationSchema={schema}
+            validationSchema={tagSchema}
             onSubmit={submitForm}
             initialValues={{
                 _id: currentCategory._id,

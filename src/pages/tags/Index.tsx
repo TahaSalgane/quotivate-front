@@ -1,33 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Button, Row, Card, Form, Collapse, Table } from 'react-bootstrap';
+
 import { getTags, deleteTag, createTag } from 'services/tagsService';
-import CateogieInterface from 'types/interfaces/tag.interface';
 import CustomModal from 'components/ui/costumeModal';
+
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { AxiosResponse } from 'axios';
 import { HttpResponse } from 'types';
 import UpdateForm from 'pages/tags/components/UpdateForm';
-import { toast } from 'react-toastify';
 
-const schema = Yup.object().shape({
-    name: Yup.string().required('Required'),
-});
-interface MyFormValues {
-    name: string;
-}
+import { toast } from 'react-toastify';
+import { tagSchema } from 'utils/YupValidation';
+import { TagFormValues } from 'types/interfaces/formValidate.interface';
+
 const TagsIndexPage: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
-    const [currentCategory, setcurrentCategory] = useState<CateogieInterface | null>(null);
-    const [tags, settags] = useState<CateogieInterface[]>([]);
+    const [currentCategory, setcurrentCategory] = useState<TagFormValues | null>(null);
+    const [tags, settags] = useState<TagFormValues[]>([]);
     const [showModal, setShowModal] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
 
-    const openDeleteModal = (category: CateogieInterface) => {
+    const openDeleteModal = (category: TagFormValues) => {
         setcurrentCategory(category);
         setShowModal(true);
     };
-    const openUpdateModal = (category: CateogieInterface) => {
+    const openUpdateModal = (category: TagFormValues) => {
         setcurrentCategory(category);
         setShowUpdateModal(true);
     };
@@ -35,17 +32,17 @@ const TagsIndexPage: React.FC = () => {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const res = await getTags();
-                settags(res.data);
+                const { data } = await getTags();
+                settags(data.realData);
             } catch (error) {
                 console.log(error);
             }
         };
         loadData();
     }, []);
-    const submitForm = async (values: MyFormValues, actions: any) => {
+    const submitForm = async (values: TagFormValues, actions: any) => {
         try {
-            const { data }: AxiosResponse<HttpResponse<CateogieInterface>> = await createTag(values);
+            const { data }: AxiosResponse<HttpResponse<TagFormValues>> = await createTag(values);
             settags([...tags, data.realData!]);
             setOpen(false);
             actions.resetForm({
@@ -57,7 +54,6 @@ const TagsIndexPage: React.FC = () => {
         } catch (excep) {
             console.log(excep);
         }
-        // console.log(values, process.env.REACT_APP_API_URL);
     };
     const handleDelete = async (id: string) => {
         const sdd = await deleteTag(id);
@@ -83,7 +79,7 @@ const TagsIndexPage: React.FC = () => {
             <Collapse in={open}>
                 <div id="example-collapse-text">
                     <Formik
-                        validationSchema={schema}
+                        validationSchema={tagSchema}
                         onSubmit={submitForm}
                         initialValues={{
                             name: '',
@@ -168,14 +164,6 @@ const TagsIndexPage: React.FC = () => {
                                 >
                                     delete
                                 </button>
-                                {/* <CustomModal
-                                    show={showModal}
-                                    handleClose={() => setShowModal(false)}
-                                    handleAction={() => handleDelete(tag._id)}
-                                    title="Confirmation"
-                                >
-                                    Are you sure you want to delete this tag ?{tag._id}
-                                </CustomModal> */}
                             </td>
                         </tr>
                     ))}
@@ -191,12 +179,7 @@ const TagsIndexPage: React.FC = () => {
             >
                 Are you sure you want to delete this tag
             </CustomModal>
-            <CustomModal
-                show={showUpdateModal}
-                handleClose={() => setShowUpdateModal(false)}
-                // handleAction={() => handlupdate(currentCategory?._id!, 'sd')}
-                title="Update"
-            >
+            <CustomModal show={showUpdateModal} handleClose={() => setShowUpdateModal(false)} title="Update">
                 <UpdateForm
                     setShowUpdateModal={setShowUpdateModal}
                     tags={tags}

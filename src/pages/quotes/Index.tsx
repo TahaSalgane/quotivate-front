@@ -1,27 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Col, Button, Row, Card, Form, Collapse, Table } from 'react-bootstrap';
-import { getQuotes, createQuote, deleteQuote } from 'services/quotesService';
-import QuoteInterface from 'types/interfaces/quote.interface';
+import { Button, Card, Col, Collapse, Form, Row, Table } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { AxiosResponse } from 'axios';
-import { HttpResponse } from 'types';
-import * as Yup from 'yup';
-import CustomModal from 'components/ui/costumeModal';
-import UpdateForm from 'pages/quotes/compontents/UpdateForm';
-import TagInterface from 'types/interfaces/tag.interface';
-import { getTags } from 'services/tagsService';
-import BreadCrumbs from 'components/ui/breadCrumbs';
+import { quoteSchema } from 'utils/YupValidation';
 import { toast } from 'react-toastify';
-const schema = Yup.object().shape({
-    author: Yup.string().required('Required'),
-    content: Yup.string().required('Required'),
-    tags: Yup.array().of(Yup.string().required()).required(),
-});
-interface MyFormValues {
-    author: string;
-    content: string;
-    tags: string[];
-}
+
+import CustomModal from 'components/ui/costumeModal';
+import BreadCrumbs from 'components/ui/breadCrumbs';
+
+import QuoteInterface from 'types/interfaces/quote.interface';
+import TagInterface from 'types/interfaces/tag.interface';
+import { HttpResponse } from 'types';
+import { createQuote, deleteQuote, getQuotes } from 'services/quotesService';
+import { getTags } from 'services/tagsService';
+import UpdateForm from 'pages/quotes/compontents/UpdateForm';
+import { QuoteFormValues } from 'types/interfaces/formValidate.interface';
+
 const Quotes: React.FC = () => {
     const [tags, setTags] = useState<TagInterface[]>([]);
     const [quotes, setQuotes] = useState<QuoteInterface[]>([]);
@@ -42,20 +36,20 @@ const Quotes: React.FC = () => {
         const loadData = async () => {
             try {
                 const { data } = await getQuotes();
-                setQuotes(data);
+                setQuotes(data.realData);
             } catch (error) {
                 console.log(error);
             }
             try {
                 const { data } = await getTags();
-                setTags(data);
+                setTags(data.realData);
             } catch (error) {
                 console.log(error);
             }
         };
         loadData();
     }, []);
-    const submitForm = async (values: MyFormValues, actions: any) => {
+    const submitForm = async (values: QuoteFormValues, actions: any) => {
         try {
             setOpen(false);
             console.log('sss');
@@ -74,15 +68,11 @@ const Quotes: React.FC = () => {
         } catch (excep) {
             console.log(excep);
         }
-        // console.log(values, process.env.REACT_APP_API_URL);
     };
     const handleDelete = async (id: string) => {
-        const sdd = await deleteQuote(id);
+        await deleteQuote(id);
         const newQuotes = quotes.filter((quote) => quote._id !== id);
         setQuotes(newQuotes);
-        console.log(quotes);
-        console.log(id);
-        console.log(sdd);
         setShowModal(false);
     };
     return (
@@ -110,7 +100,7 @@ const Quotes: React.FC = () => {
             <Collapse in={open}>
                 <div id="example-collapse-text">
                     <Formik
-                        validationSchema={schema}
+                        validationSchema={quoteSchema}
                         onSubmit={submitForm}
                         initialValues={{
                             author: '',
@@ -120,7 +110,6 @@ const Quotes: React.FC = () => {
                     >
                         {({ handleSubmit, handleChange, values, touched, errors }) => (
                             <Form noValidate onSubmit={handleSubmit}>
-                                {JSON.stringify(errors)}
                                 <Row style={{ width: '90%' }} className="vh-75 d-flex justify-content-center pt-3">
                                     <Col md={8} lg={6} xs={12}>
                                         <div className=" border border-2 border-primary" style={{ width: '90%' }}></div>
@@ -131,7 +120,7 @@ const Quotes: React.FC = () => {
                                             <Card.Body>
                                                 <div className="mb-3 mt-md-4">
                                                     <h2 className="fw-bold mb-2 text-center text-uppercase text-dark">
-                                                        Add tags
+                                                        Add Quote
                                                     </h2>
 
                                                     <div className="mb-3">
@@ -247,14 +236,6 @@ const Quotes: React.FC = () => {
                                 >
                                     delete
                                 </button>
-                                {/* <CustomModal
-                                    show={showModal}
-                                    handleClose={() => setShowModal(false)}
-                                    handleAction={() => handleDelete(tags._id)}
-                                    title="Confirmation"
-                                >
-                                    Are you sure you want to delete this tags ?{tags._id}
-                                </CustomModal> */}
                             </td>
                         </tr>
                     ))}
@@ -270,12 +251,7 @@ const Quotes: React.FC = () => {
             >
                 Are you sure you want to delete this Quote
             </CustomModal>
-            <CustomModal
-                show={showUpdateModal}
-                handleClose={() => setShowUpdateModal(false)}
-                // handleAction={() => handlupdate(currentCategory?._id!, 'sd')}
-                title="Update"
-            >
+            <CustomModal show={showUpdateModal} handleClose={() => setShowUpdateModal(false)} title="Update">
                 <UpdateForm
                     setShowUpdateModal={setShowUpdateModal}
                     quotes={quotes}

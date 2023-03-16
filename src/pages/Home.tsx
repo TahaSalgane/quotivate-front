@@ -17,10 +17,11 @@ const Home: React.FC = () => {
             try {
                 setQuoteHeader('Populaire Quotes');
                 const { data } = await getQuotes();
-                setQuotes(data);
+                console.log(data);
+                setQuotes(data.realData);
                 console.log(quotes);
                 const res = await getTags();
-                setTag(res.data);
+                setTag(res.data.realData);
                 console.log(tag);
             } catch (error) {
                 console.log(error);
@@ -32,7 +33,7 @@ const Home: React.FC = () => {
         try {
             setQuoteHeader('Latest Quotes');
             const { data } = await getLatestQuotes();
-            setQuotes(data);
+            setQuotes(data.realData);
             console.log(quotes);
         } catch (error) {
             console.log(error);
@@ -42,7 +43,7 @@ const Home: React.FC = () => {
         try {
             setQuoteHeader('Populaire Quotes');
             const { data } = await getQuotes();
-            setQuotes(data);
+            setQuotes(data.realData);
             console.log(quotes);
         } catch (error) {
             console.log(error);

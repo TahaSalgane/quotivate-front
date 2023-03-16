@@ -1,15 +1,7 @@
 import React, { FC } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-type ModalProps = {
-    show: boolean;
-    handleClose: () => void;
-    handleAction?: () => void;
-    title: string;
-    btnText?: string;
-    variant?: string;
-    children: React.ReactNode | string;
-};
+import { ModalProps } from '../../types';
 
 const CustomModal: FC<ModalProps> = ({ show, handleClose, handleAction, title, children, variant, btnText }) => {
     return (

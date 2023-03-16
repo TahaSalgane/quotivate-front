@@ -1,33 +1,68 @@
 import React from 'react';
 import { Col, Button, Row, Card, Form } from 'react-bootstrap';
-// import Index from 'components/core/Layout/Index';
-const Forgotpassword = () => {
+import { Formik } from 'formik';
+import { toast } from 'react-toastify';
+import { forgotSchema } from 'utils/YupValidation';
+import { forgotFormValues } from 'types/interfaces/formValidate.interface';
+
+const Forgotpassword: React.FC = () => {
+    const submitForm = async (values: forgotFormValues) => {
+        try {
+            console.log(values);
+            toast.success('Tag created successfully', { autoClose: 3000 });
+        } catch (excep: any) {
+            toast.error(excep.message, { autoClose: 3000 });
+        }
+        // console.log(values, process.env.REACT_APP_API_URL);
+    };
     return (
-        <Row className="vh-100 d-flex justify-content-center mt-5 ">
-            <Col md={8} lg={6} xs={12}>
-                <div className="border border-2 border-primary"></div>
-                <Card className="shadow px-4 bg-transparent text-white">
-                    <Card.Body>
-                        <div className="mb-3 mt-md-4">
-                            <h2 className="fw-bold mb-2 text-center text-uppercase mt-5 ">Forgot Password</h2>
-                            <div className="mb-3">
-                                <Form>
-                                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                                        <Form.Label className="text-center mt-4">Email address</Form.Label>
-                                        <Form.Control type="email" placeholder="Enter email" />
-                                    </Form.Group>
-                                    <div className="d-grid">
-                                        <Button variant="primary" type="submit" className="mt-3 mb-5">
-                                            send verification code
-                                        </Button>
+        <Formik
+            validationSchema={forgotSchema}
+            onSubmit={submitForm}
+            initialValues={{
+                email: '',
+            }}
+        >
+            {({ handleSubmit, handleChange, values, touched, errors, handleBlur }) => (
+                <Form noValidate onSubmit={handleSubmit}>
+                    <Row className="vh-100 d-flex justify-content-center pt-3">
+                        <Col md={8} lg={6} xs={12}>
+                            <div className="border border-2 border-primary"></div>
+                            <Card className="shadow px-4 text-white bg-transparent">
+                                <Card.Body>
+                                    <div className="mb-3 mt-md-4">
+                                        <h2 className="fw-bold mb-2 text-center text-uppercase">Sign in</h2>
+                                        <div className="mb-3">
+                                            <Form.Group className="mb-3" controlId="validationFormik02">
+                                                <Form.Label>Email</Form.Label>
+                                                <Form.Control
+                                                    type="email"
+                                                    name="email"
+                                                    placeholder="Enter Your email"
+                                                    value={values.email}
+                                                    onChange={handleChange}
+                                                    isValid={touched.email && !errors.email}
+                                                    isInvalid={!!errors.email && touched.email}
+                                                    onBlur={handleBlur}
+                                                />
+                                                <Form.Text className="text-danger">
+                                                    {touched.email && errors.email ? (
+                                                        <div className="text-danger">{errors.email}</div>
+                                                    ) : null}
+                                                </Form.Text>
+                                            </Form.Group>
+                                            <div className="d-grid">
+                                                <Button type="submit">Submit form</Button>
+                                            </div>
+                                        </div>
                                     </div>
-                                </Form>
-                            </div>
-                        </div>
-                    </Card.Body>
-                </Card>
-            </Col>
-        </Row>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Form>
+            )}
+        </Formik>
     );
 };
 export default Forgotpassword;

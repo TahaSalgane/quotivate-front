@@ -1,28 +1,22 @@
 import React from 'react';
 import { Col, Button, Row, Card, Form } from 'react-bootstrap';
-import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
+
 import { loginUser } from 'services/authService';
 import useUserStore, { StoreStateInterface, PERSIST_KEY } from 'store/userStore';
 import getUser from 'utils/helper';
 import { toast } from 'react-toastify';
+import { loginSchema } from 'utils/YupValidation';
+import { loginFormValues } from 'types/interfaces/formValidate.interface';
 
-const schema = Yup.object().shape({
-    email: Yup.string().email('Invalid email address').required('Required'),
-    password: Yup.string().min(5, 'Must be 5 characters or more').required('required'),
-});
-interface MyFormValues {
-    email: string;
-    password: string;
-}
 const Login: React.FC = () => {
     const navigation = useNavigate();
     const setLoadingFalse = useUserStore((state: StoreStateInterface) => state.setLoadingFalse);
     const setLoadingTrue = useUserStore((state: StoreStateInterface) => state.setLoadingTrue);
     const setUser = useUserStore((state: StoreStateInterface) => state.setUser);
 
-    const submitForm = async (values: MyFormValues) => {
+    const submitForm = async (values: loginFormValues) => {
         try {
             setLoadingTrue();
             const res = await loginUser(values);
@@ -43,7 +37,7 @@ const Login: React.FC = () => {
 
     return (
         <Formik
-            validationSchema={schema}
+            validationSchema={loginSchema}
             onSubmit={submitForm}
             initialValues={{
                 email: '',

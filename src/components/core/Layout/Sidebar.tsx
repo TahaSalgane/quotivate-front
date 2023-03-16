@@ -38,16 +38,6 @@ const Sidebar: React.FC<Props> = ({ userlogOut }: Props) => {
                     <strong>Sign out</strong>
                 </div>
             </Nav>
-
-            {/* <div className="dropdown">
-                <button
-                    onClick={() => userlogOut()}
-                    className="p-3 d-flex align-items-center text-white text-decoration-none"
-                >
-                    <FontAwesomeIcon className="me-1 fa-1x" icon={faRightFromBracket} />
-                    <strong>Sign out</strong>
-                </button>
-            </div> */}
         </div>
     );
 };

@@ -1,19 +1,14 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { Col, Button, Row, Form } from 'react-bootstrap';
-import * as Yup from 'yup';
 import { updateQuote } from 'services/quotesService';
 import QuoteInterface from 'types/interfaces/quote.interface';
-import TagInterface from 'types/interfaces/tag.interface';
+import { TagFormValues } from 'types/interfaces/formValidate.interface';
+import { quoteSchema } from 'utils/YupValidation';
 
-const schema = Yup.object().shape({
-    author: Yup.string().required('Required'),
-    content: Yup.string().required('Required'),
-    tags: Yup.array().of(Yup.string().required()).required(),
-});
 type Props = {
     setShowUpdateModal: (state: boolean) => void;
-    tags: TagInterface[];
+    tags: TagFormValues[];
     quotes: QuoteInterface[];
     setQuotes: (data: QuoteInterface[]) => void;
     currentQuote: QuoteInterface;
@@ -31,13 +26,13 @@ const UpdateForm: React.FC<Props> = ({ setShowUpdateModal, quotes, setQuotes, cu
     };
     return (
         <Formik
-            validationSchema={schema}
+            validationSchema={quoteSchema}
             onSubmit={submitForm}
             initialValues={{
                 _id: currentQuote._id,
                 author: currentQuote.author,
                 content: currentQuote.content,
-                tags: (currentQuote.tags as TagInterface[]).map((d: TagInterface) => d._id.toString()),
+                tags: (currentQuote.tags as TagFormValues[]).map((d: TagFormValues) => d._id!.toString()),
             }}
         >
             {({ handleSubmit, handleChange, values, touched, errors }) => (
@@ -84,8 +79,8 @@ const UpdateForm: React.FC<Props> = ({ setShowUpdateModal, quotes, setQuotes, cu
                                     multiple
                                 >
                                     <option>Select..</option>
-                                    {tags.map((item: TagInterface) => (
-                                        <option key={item._id} value={item._id}>
+                                    {tags.map((item: TagFormValues) => (
+                                        <option key={item._id!} value={item._id!}>
                                             {item.name}
                                         </option>
                                     ))}

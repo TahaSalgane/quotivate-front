@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Col, Button, Row, Card, Form, Collapse, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { getAllUsers } from 'services/usersService';
 const Users: React.FC = () => {

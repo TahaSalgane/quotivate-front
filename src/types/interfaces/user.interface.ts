@@ -3,4 +3,5 @@ export default interface UserInterface {
     email: string;
     username: string;
     isAdmin: boolean;
+    status: number;
 }

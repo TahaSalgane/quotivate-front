@@ -1,30 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { getAllUsers } from 'services/usersService';
+import { getAllUsers, disactiveUser, activeUser } from 'services/usersService';
+import UserInterface from '../types/interfaces/user.interface';
+
 const Users: React.FC = () => {
-    const [users, setUsers] = useState<any[]>([]);
+    const [users, setUsers] = useState<UserInterface[]>([]);
     useEffect(() => {
         const loadData = async () => {
             try {
                 const { data } = await getAllUsers();
-                console.log(data);
-                setUsers(data);
-                console.log(users);
+                setUsers(data.realData);
             } catch (error) {
                 console.log(error);
             }
         };
         loadData();
     }, []);
+    const handleClick = async (id: string) => {
+        const index = users.findIndex((item: UserInterface) => item._id.toString() === id.toString());
+        const listUpdate = [...users];
+        console.log(users[index].status);
+        if (users[index].status === 1) {
+            await disactiveUser(id);
+            listUpdate[index].status = 0;
+            setUsers(listUpdate);
+        } else {
+            await activeUser(id);
+            listUpdate[index].status = 1;
+            setUsers(listUpdate);
+        }
+    };
     return (
         <div className="">
             <h2 className="m-5">All Users</h2>
             <Table className="w-75 m-4 text-black" striped bordered hover variant="white">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Nme</th>
+                        <th>username</th>
                         <th>Email</th>
                         <th className="text-center" colSpan={2}>
                             Action
@@ -32,51 +44,33 @@ const Users: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>azetat@gmail.com</td>
-                        <td>
-                            <Link className="btn btn-warning" to="update/1">
-                                Update
-                            </Link>
-                        </td>
-                        <td>
-                            <Link className="btn btn-danger" to="delete/1">
-                                delete
-                            </Link>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Jacob</td>
-                        <td>azetat@gmail.com</td>
-                        <td>
-                            <Link className="btn btn-warning" to="update/2">
-                                Update
-                            </Link>
-                        </td>
-                        <td>
-                            <Link className="btn btn-danger" to="delete/2">
-                                delete
-                            </Link>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Skalo</td>
-                        <td>azetat@gmail.com</td>
-                        <td>
-                            <Link className="btn btn-warning" to="update/3">
-                                Update
-                            </Link>
-                        </td>
-                        <td>
-                            <Link className="btn btn-danger" to="delete/3">
-                                delete
-                            </Link>
-                        </td>
-                    </tr>
+                    {users.map((user: UserInterface, index) => (
+                        <tr key={index}>
+                            <td className="text-center w-25 ">{user.username}</td>
+                            <td className="text-center w-25 ">{user.email}</td>
+
+                            <td style={{ width: '18%' }}>
+                                <button
+                                    className={`btn w-100 ${user.status === 1 ? 'btn-info' : 'btn-warning'}`}
+                                    onClick={() => {
+                                        handleClick(user._id);
+                                    }}
+                                >
+                                    {user.status === 1 ? 'active' : 'desactive'}
+                                </button>
+                            </td>
+                            <td style={{ width: '14%' }}>
+                                <button
+                                    className="btn btn-danger w-100"
+                                    onClick={() => {
+                                        console.log('delete');
+                                    }}
+                                >
+                                    delete
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </Table>
         </div>

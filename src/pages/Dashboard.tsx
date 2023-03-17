@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faQuoteLeftAlt, faTags } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
+    useEffect(() => {
+        console.log('gfodgo');
+    }, []);
     return (
         <>
             <Container fluid className="mt-5">
@@ -20,7 +23,7 @@ const Dashboard = () => {
                                     </Col>
                                     <Col xs="7">
                                         <h2 className="card-category">Users</h2>
-                                        <Card.Title as="h4">120</Card.Title>
+                                        <Card.Title as="h4"></Card.Title>
                                     </Col>
                                 </Row>
                             </Card.Body>

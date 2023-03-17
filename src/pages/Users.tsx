@@ -24,9 +24,13 @@ const Users: React.FC = () => {
             await disactiveUser(id);
             listUpdate[index].status = 0;
             setUsers(listUpdate);
-        } else {
+        } else if (users[index].status === 0) {
             await activeUser(id);
             listUpdate[index].status = 1;
+            setUsers(listUpdate);
+        } else if (users[index].status === -1) {
+            await activeUser(id);
+            listUpdate[index].status = 0;
             setUsers(listUpdate);
         }
     };
@@ -36,9 +40,9 @@ const Users: React.FC = () => {
         console.log(users[index].status);
         if (users[index].status === 1) {
             await banUser(id);
-            listUpdate[index].status = 0;
+            listUpdate[index].status = -1;
             setUsers(listUpdate);
-        } else {
+        } else if (users[index].status == -1) {
             await activeUser(id);
             listUpdate[index].status = 1;
             setUsers(listUpdate);
@@ -75,12 +79,12 @@ const Users: React.FC = () => {
                             </td>
                             <td style={{ width: '14%' }}>
                                 <button
-                                    className={`btn w-100 ${user.status === 1 ? 'btn-info' : 'btn-warning'}`}
+                                    className={`btn w-100 ${user.status === -1 ? 'btn-info' : 'btn-danger'}`}
                                     onClick={() => {
                                         blockUser(user._id);
                                     }}
                                 >
-                                    {user.status === 1 ? 'ban' : 'unban'}
+                                    {user.status === -1 ? 'ban' : 'unban'}
                                 </button>
                             </td>
                         </tr>

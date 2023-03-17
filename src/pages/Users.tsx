@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table } from 'react-bootstrap';
-import { getAllUsers, disactiveUser, activeUser } from 'services/usersService';
+import { getAllUsers, disactiveUser, activeUser, banUser } from 'services/usersService';
 import UserInterface from '../types/interfaces/user.interface';
 
 const Users: React.FC = () => {
@@ -22,6 +22,20 @@ const Users: React.FC = () => {
         console.log(users[index].status);
         if (users[index].status === 1) {
             await disactiveUser(id);
+            listUpdate[index].status = 0;
+            setUsers(listUpdate);
+        } else {
+            await activeUser(id);
+            listUpdate[index].status = 1;
+            setUsers(listUpdate);
+        }
+    };
+    const blockUser = async (id: string) => {
+        const index = users.findIndex((item: UserInterface) => item._id.toString() === id.toString());
+        const listUpdate = [...users];
+        console.log(users[index].status);
+        if (users[index].status === 1) {
+            await banUser(id);
             listUpdate[index].status = 0;
             setUsers(listUpdate);
         } else {
@@ -61,12 +75,12 @@ const Users: React.FC = () => {
                             </td>
                             <td style={{ width: '14%' }}>
                                 <button
-                                    className="btn btn-danger w-100"
+                                    className={`btn w-100 ${user.status === 1 ? 'btn-info' : 'btn-warning'}`}
                                     onClick={() => {
-                                        console.log('delete');
+                                        blockUser(user._id);
                                     }}
                                 >
-                                    delete
+                                    {user.status === 1 ? 'ban' : 'unban'}
                                 </button>
                             </td>
                         </tr>

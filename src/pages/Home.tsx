@@ -14,7 +14,6 @@ const Home: React.FC = () => {
     const [quoteHeader, setQuoteHeader] = useState<string>('');
     const [tag, setTag] = useState<CateogieInterface[]>([]);
     const [pageNumber, setPageNumber] = useState<number>(2);
-    const [pageLatestNumber, setPageLatestNumber] = useState<number>(1);
     useEffect(() => {
         const loadData = async () => {
             try {
@@ -44,7 +43,7 @@ const Home: React.FC = () => {
     const latestQuotes = async () => {
         try {
             setQuoteHeader('Latest Quotes');
-            const { data } = await getLatestQuotes(pageLatestNumber);
+            const { data } = await getLatestQuotes(1);
             setQuotes(data.realData);
             console.log(quotes);
         } catch (error) {

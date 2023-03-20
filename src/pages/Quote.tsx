@@ -66,7 +66,7 @@ export const Quote: React.FC<props> = ({ data, quotes, setQuotes }: props) => {
                 <span style={{ marginLeft: '15px', color: '#999999', fontSize: '14px' }}>
                     tags :&nbsp;&nbsp;
                     {data.tags.map((d: any, index: number) => (
-                        <Link key={d._id} to={`/tag/${d.name}`} className="text-secondary">
+                        <Link key={index} to={`/tag/${d.name}`} className="text-secondary">
                             {d.name}
                         </Link>
                     ))}

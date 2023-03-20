@@ -74,7 +74,7 @@ const Users: React.FC = () => {
                                         handleClick(user._id);
                                     }}
                                 >
-                                    {user.status === 1 ? 'active' : 'desactive'}
+                                    {user.status === 1 ? 'actived' : 'desactived'}
                                 </button>
                             </td>
                             <td style={{ width: '14%' }}>
@@ -84,7 +84,7 @@ const Users: React.FC = () => {
                                         blockUser(user._id);
                                     }}
                                 >
-                                    {user.status === -1 ? 'ban' : 'unban'}
+                                    {user.status === -1 ? 'banned' : 'unbanned'}
                                 </button>
                             </td>
                         </tr>

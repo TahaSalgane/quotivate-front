@@ -12,24 +12,20 @@ import { loginFormValues } from 'types/interfaces/formValidate.interface';
 
 const Login: React.FC = () => {
     const navigation = useNavigate();
-    const setLoadingFalse = useUserStore((state: StoreStateInterface) => state.setLoadingFalse);
-    const setLoadingTrue = useUserStore((state: StoreStateInterface) => state.setLoadingTrue);
+
     const setUser = useUserStore((state: StoreStateInterface) => state.setUser);
 
     const submitForm = async (values: loginFormValues) => {
         try {
-            setLoadingTrue();
             const res = await loginUser(values);
             const token = res.data.realData;
             localStorage.setItem(PERSIST_KEY, token);
             const userDecoded = getUser(token);
             setUser(userDecoded!);
-            setLoadingFalse();
             navigation('/');
             toast.success('Tag created successfully', { autoClose: 3000 });
         } catch (excep: any) {
             toast.error(excep.message, { autoClose: 3000 });
-            setLoadingFalse();
             console.log(excep);
         }
         // console.log(values, process.env.REACT_APP_API_URL);

@@ -35,7 +35,7 @@ const Quotes: React.FC = () => {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const { data } = await getQuotes();
+                const { data } = await getQuotes(1);
                 setQuotes(data.realData);
             } catch (error) {
                 console.log(error);

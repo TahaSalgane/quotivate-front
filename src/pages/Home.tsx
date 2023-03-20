@@ -8,15 +8,18 @@ import { getQuotes, getLatestQuotes } from 'services/quotesService';
 import { getTags } from 'services/tagsService';
 import BreadCrumbs from 'components/ui/breadCrumbs';
 import { Quote } from 'pages/Quote';
+import InfiniteScroll from 'react-infinite-scroll-component';
 const Home: React.FC = () => {
     const [quotes, setQuotes] = useState<QuoteInterface[]>([]);
     const [quoteHeader, setQuoteHeader] = useState<string>('');
     const [tag, setTag] = useState<CateogieInterface[]>([]);
+    const [pageNumber, setPageNumber] = useState<number>(2);
+    const [pageLatestNumber, setPageLatestNumber] = useState<number>(1);
     useEffect(() => {
         const loadData = async () => {
             try {
                 setQuoteHeader('Populaire Quotes');
-                const { data } = await getQuotes();
+                const { data } = await getQuotes(1);
                 console.log(data);
                 setQuotes(data.realData);
                 console.log(quotes);
@@ -29,10 +32,19 @@ const Home: React.FC = () => {
         };
         loadData();
     }, []);
+
+    const fetchData = () => {
+        const fetchQuotes = async () => {
+            const { data } = await getQuotes(pageNumber);
+            await setPageNumber((prev) => prev + 1);
+            setQuotes(quotes.concat(data.realData));
+        };
+        fetchQuotes();
+    };
     const latestQuotes = async () => {
         try {
             setQuoteHeader('Latest Quotes');
-            const { data } = await getLatestQuotes();
+            const { data } = await getLatestQuotes(pageLatestNumber);
             setQuotes(data.realData);
             console.log(quotes);
         } catch (error) {
@@ -42,8 +54,8 @@ const Home: React.FC = () => {
     const PopulaireQuotes = async () => {
         try {
             setQuoteHeader('Populaire Quotes');
-            const { data } = await getQuotes();
-            setQuotes(data.realData);
+            const { data } = await getQuotes(pageNumber);
+            setQuotes(quotes.concat(data.realData));
             console.log(quotes);
         } catch (error) {
             console.log(error);
@@ -68,9 +80,16 @@ const Home: React.FC = () => {
                     <button onClick={latestQuotes}>
                         <h4>Latest Quotes</h4>
                     </button>
-                    {quotes.map((quote) => (
-                        <Quote key={quote._id} data={quote} quotes={quotes} setQuotes={setQuotes} />
-                    ))}
+                    <InfiniteScroll
+                        dataLength={quotes.length} //This is important field to render the next data
+                        next={fetchData}
+                        hasMore={true}
+                        loader={<h4>Loading...</h4>}
+                    >
+                        {quotes.map((quote: any, i: number) => (
+                            <Quote key={i} data={quote} quotes={quotes} setQuotes={setQuotes} />
+                        ))}
+                    </InfiniteScroll>
                 </Col>
                 <Col md={4}>
                     <h3>tag:</h3>

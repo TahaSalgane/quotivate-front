@@ -28,7 +28,6 @@ const App: FC = () => {
     const clearUser = useUserStore((state: StoreStateInterface) => state.clearUser);
 
     const logOut = useCallback(() => {
-        console.log('called');
         serviceLogOut();
         clearUser();
     }, [user]);

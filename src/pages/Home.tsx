@@ -19,12 +19,9 @@ const Home: React.FC = () => {
             try {
                 setQuoteHeader('Populaire Quotes');
                 const { data } = await getQuotes(1);
-                console.log(data);
                 setQuotes(data.realData);
-                console.log(quotes);
                 const res = await getTags();
                 setTag(res.data.realData);
-                console.log(tag);
             } catch (error) {
                 console.log(error);
             }
@@ -45,7 +42,6 @@ const Home: React.FC = () => {
             setQuoteHeader('Latest Quotes');
             const { data } = await getLatestQuotes(1);
             setQuotes(data.realData);
-            console.log(quotes);
         } catch (error) {
             console.log(error);
         }
@@ -55,7 +51,6 @@ const Home: React.FC = () => {
             setQuoteHeader('Populaire Quotes');
             const { data } = await getQuotes(pageNumber);
             setQuotes(quotes.concat(data.realData));
-            console.log(quotes);
         } catch (error) {
             console.log(error);
         }
@@ -95,7 +90,7 @@ const Home: React.FC = () => {
                     <Row>
                         <Col md={6}>
                             {[...tag].splice(0, Math.ceil(tag.length / 2)).map((tag) => (
-                                <Link to="tag.id" key={tag._id}>
+                                <Link to={`/tag/${tag.name}`} key={tag._id}>
                                     {tag.name} <br />
                                 </Link>
                             ))}
@@ -103,7 +98,7 @@ const Home: React.FC = () => {
                         <Col md={6}>
                             {/* {Data.tag.map((tag: any) => ( */}
                             {[...tag].splice(-Math.ceil(tag.length / 2)).map((tag) => (
-                                <Link to={`$tag.id}`} key={tag._id}>
+                                <Link to={`/tag/${tag.name}`} key={tag._id}>
                                     {tag.name} <br />
                                 </Link>
                             ))}

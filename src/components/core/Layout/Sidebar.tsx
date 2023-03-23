@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,9 +8,6 @@ type Props = {
     userlogOut: () => void;
 };
 const Sidebar: React.FC<Props> = ({ userlogOut }: Props) => {
-    useEffect(() => {
-        console.log('wsup');
-    }, []);
     return (
         <div
             className="bg-dark text-white d-flex flex-column flex-shrink-0 p-3 border-top rounded shadow-lg"

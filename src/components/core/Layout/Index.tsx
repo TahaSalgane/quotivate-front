@@ -37,7 +37,9 @@ const Index: React.FC<Props> = ({ isNotDark, layoutDesign, userlogOut }: Props) 
     const user = useUserStore((state: StoreStateInterface) => state.user);
     return (
         <div className={layoutDesign}>
-            <Header isNotDark={isNotDark} userlogOut={userlogOut} />
+            <div style={{ position: 'sticky', top: '0', zIndex: '999' }}>
+                <Header isNotDark={isNotDark} userlogOut={userlogOut} />
+            </div>
             {user?.isAdmin ? (
                 <MyGridContainer>
                     <div className="my-sidebar">

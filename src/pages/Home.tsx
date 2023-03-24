@@ -34,6 +34,7 @@ const Home: React.FC = () => {
             const { data } = await getQuotes(pageNumber);
             await setPageNumber((prev) => prev + 1);
             setQuotes(quotes.concat(data.realData));
+            console.log(pageNumber);
         };
         fetchQuotes();
     };
@@ -42,6 +43,7 @@ const Home: React.FC = () => {
             setQuoteHeader('Latest Quotes');
             const { data } = await getLatestQuotes(1);
             setQuotes(data.realData);
+            setPageNumber(1);
         } catch (error) {
             console.log(error);
         }
@@ -50,7 +52,7 @@ const Home: React.FC = () => {
         try {
             setQuoteHeader('Populaire Quotes');
             const { data } = await getQuotes(pageNumber);
-            setQuotes(quotes.concat(data.realData));
+            setQuotes(data.realData);
         } catch (error) {
             console.log(error);
         }

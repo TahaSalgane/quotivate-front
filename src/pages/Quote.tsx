@@ -40,7 +40,11 @@ export const Quote: React.FC<props> = ({ data, quotes, setQuotes }: props) => {
             <Card text="white" style={{ width: '90%' }} className="mb-2 bg-dark">
                 <Card.Body>
                     <FontAwesomeIcon icon={faQuoteLeft} className="fa-xs" />
-                    <Card.Text>{data.content}</Card.Text>
+                    <Card.Text>
+                        <Link style={{ textDecoration: 'none', color: 'gray' }} to={`/Quotes/details/${data._id}`}>
+                            {data.content}
+                        </Link>
+                    </Card.Text>
                     <Row>
                         <Col md={10}>
                             <div className="Author">-{data.author}</div>

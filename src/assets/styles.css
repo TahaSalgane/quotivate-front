@@ -71,20 +71,7 @@
     max-width: 100%;
 } */
 
-.image-gallery-text {
-    position: absolute;
-    top: 50%;
-    width: 1px;
-    text-align: center;
-    word-spacing: 1000px;
-    font-size: 18px;
-    word-wrap: break-word;
-}
-.image-gallery-image img {
-    width: 100%;
-    height: auto;
-    opacity: 0.9;
-}
 .image-gallery-image {
     position: relative;
+    height: 400px;
 }

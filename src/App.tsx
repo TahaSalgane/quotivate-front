@@ -21,6 +21,8 @@ import useUserStore, { StoreStateInterface, PERSIST_KEY } from 'store/userStore'
 import EventBus from 'utils/eventBus';
 import { logout as serviceLogOut } from 'services/authService';
 import getUser from 'utils/helper';
+import DetailQuote from 'pages/quotes/DetailQuote';
+import Gallery from 'pages/quotes/loading';
 
 const App: FC = () => {
     const location = useLocation();
@@ -70,6 +72,8 @@ const App: FC = () => {
                     />
                     <Route path="/admin/quotes" element={<QuotesIndexPage />} />
                     <Route path="/tag/:tag" element={<Tag />} />
+                    <Route path="/quotes/details/:id" element={<DetailQuote />} />
+                    <Route path="/quotes/test/" element={<Gallery />} />
                     <Route path="/admin/dashboard" element={<Dashboard />} />
                     <Route path="/admin/tags" element={<TagsIndexPage />} />
                 </Route>

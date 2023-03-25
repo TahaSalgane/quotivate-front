@@ -58,3 +58,33 @@
     color: rgb(255, 0, 0); /*will change color of text within the element on hover */
     z-index: 999;
 }
+
+/* .image-gallery-slide-wrapper img {
+    max-width: 700px;
+    height: 800px;
+} */
+/* .my-gallery-container {
+    max-width: 100%;
+    overflow-x: hidden;
+} */
+/* .image-gallery-thumbnails-wrapper {
+    max-width: 100%;
+} */
+
+.image-gallery-text {
+    position: absolute;
+    top: 50%;
+    width: 1px;
+    text-align: center;
+    word-spacing: 1000px;
+    font-size: 18px;
+    word-wrap: break-word;
+}
+.image-gallery-image img {
+    width: 100%;
+    height: auto;
+    opacity: 0.9;
+}
+.image-gallery-image {
+    position: relative;
+}

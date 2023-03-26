@@ -77,7 +77,7 @@ const Home: React.FC = () => {
                         <h4>Latest Quotes</h4>
                     </button>
                     <InfiniteScroll
-                        dataLength={quotes.length} //This is important field to render the next data
+                        dataLength={quotes.length}
                         next={fetchData}
                         hasMore={true}
                         loader={<h4>Loading...</h4>}

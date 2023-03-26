@@ -23,3 +23,6 @@ export const registerSchema = Yup.object().shape({
 export const forgotSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Required'),
 });
+export const commentSchema = Yup.object().shape({
+    text: Yup.string().required('Required'),
+});

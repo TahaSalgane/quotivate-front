@@ -4,4 +4,5 @@ export interface CommentInterface {
     quoteId?: string;
     user?: string;
     username?: string;
+    createdAt?: any;
 }

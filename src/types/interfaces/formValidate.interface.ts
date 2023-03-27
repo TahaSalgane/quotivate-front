@@ -7,6 +7,10 @@ export interface TagFormValues {
     _id?: string;
     name: string;
 }
+export interface TagFormValues {
+    _id?: string;
+    name: string;
+}
 export interface loginFormValues {
     email: string;
     password: string;

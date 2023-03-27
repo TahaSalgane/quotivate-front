@@ -17,7 +17,7 @@ const MyGridContainer = styled.div`
     .my-sidebar {
         height: 100vh;
         position: sticky;
-        top: 2px;
+        top: 40px;
     }
 
     .my-content {

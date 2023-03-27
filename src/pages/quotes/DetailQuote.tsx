@@ -167,7 +167,7 @@ const DetailQuote: React.FC = () => {
                 </p>{' '}
             </Row>
             <AddComment />
-            <CommentList />
+            <CommentList comments={quote.comments} />
         </Container>
     );
 };

@@ -52,7 +52,27 @@
         width: auto;
     }
 }
+.footer {
+    color: var(--white);
+    background-color: var(--black);
+    font-size: 14px;
+    list-style-type: none;
+    margin-top: 3rem;
+}
 
+.footer p {
+    color: #8a8a8a;
+}
+
+.footer .col-2 {
+    flex: 1;
+    text-align: center;
+}
+
+.footer .col-2 img {
+    width: 180px;
+    margin-bottom: 20px;
+}
 .nav .links:hover {
     background-color: green; /*will change background-color of element on hover */
     color: rgb(255, 0, 0); /*will change color of text within the element on hover */

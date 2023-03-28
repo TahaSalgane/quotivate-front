@@ -31,6 +31,7 @@ axios.interceptors.request.use(
             const token = localStorage.getItem(PERSIST_KEY);
             if (token) {
                 config.headers.Authorization = 'Bearer ' + token;
+                console.log(token);
             }
         }
         return config;

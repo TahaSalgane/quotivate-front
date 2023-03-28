@@ -56,7 +56,9 @@ const Index: React.FC<Props> = ({ isNotDark, layoutDesign, userlogOut }: Props) 
                     <Outlet />
                 </Container>
             )}
-            <Footer />
+            <div className="page-footer pt-4">
+                <Footer />
+            </div>
         </div>
     );
 };

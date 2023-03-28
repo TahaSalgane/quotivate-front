@@ -7,7 +7,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import 'react-image-gallery/styles/css/image-gallery.css';
 
 import { Link, useParams } from 'react-router-dom';
-import QuoteInterface from 'types/interfaces/quote.interface';
+import QuoteInterface from 'types/quote.interface';
 import ImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import AddComment from 'pages/comments/AddComment';
 import CommentList from 'pages/comments/CommentList';
@@ -22,7 +22,7 @@ type idparams = {
 };
 const DetailQuote: React.FC = () => {
     const { id } = useParams<idparams>();
-    const [quote, setQuote] = useState<QuoteInterface[] | any>([]);
+    const [quote, setQuote] = useState<QuoteInterface[]>([]);
     const [fontSize, setFontSize] = useState('20px');
 
     useEffect(() => {
@@ -166,8 +166,9 @@ const DetailQuote: React.FC = () => {
                     -{quote.author}
                 </p>{' '}
             </Row>
-            <AddComment />
-            <CommentList comments={quote.comments} />
+            <AddComment comments={quote.comments!} quoteId={quote?._id} />
+            {/* <CommentList comments={quote.comments} /> */}
+            <CommentList comments={[{ _id: '1' }]} />
         </Container>
     );
 };

@@ -9,7 +9,7 @@ import Moment from 'react-moment';
 import useUserStore, { StoreStateInterface } from 'store/userStore';
 
 type Props = {
-    comments: CommentInterface[];
+    comments: CommentInterface[] | any;
 };
 const CommentList: React.FC<Props> = ({ comments }: Props) => {
     const [commentsss, setCommentsss] = useState<CommentInterface[]>([]);
@@ -34,14 +34,14 @@ const CommentList: React.FC<Props> = ({ comments }: Props) => {
         setCurrentComment(comment);
         setShowUpdateModal(true);
     };
-    const commentIds = comments ? Object.keys(comments) : [];
+    // const commentIds = comments ? Object.keys(comments) : [];
     const commentss = { text: 'k3ayza' };
     return (
         <div className="comment-list">
             <h4 className="comment-list-count"> Comments</h4>
-            {commentIds.map((commentId: string) => {
-                const comment: CommentInterface = comments[commentId as any];
-
+            {/* {commentIds.map((commentId: string) => {
+                const comment: CommentInterface = comments[commentId as any]; */}
+            {comments.map((comment: any) => {
                 return (
                     <div key={comment._id} className="comment-item">
                         <div className="comment-item-info">

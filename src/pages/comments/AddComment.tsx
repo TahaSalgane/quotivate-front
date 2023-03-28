@@ -25,6 +25,7 @@ const AddComment: React.FC<Props> = ({ quoteId, comments }: Props) => {
                 data: { realData },
             } = await createComment({ text, id });
             setNewComment([...newComment, realData]);
+            console.log(comments);
             // const index = quotes.findIndex((item: QuoteInterface) => item._id.toString() === id.toString());
             // const listUpdate = [...quotes];
             // listUpdate[index] = realData;

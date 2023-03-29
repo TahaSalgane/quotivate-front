@@ -23,6 +23,7 @@ import { logout as serviceLogOut } from 'services/authService';
 import getUser from 'utils/helper';
 import DetailQuote from 'pages/quotes/DetailQuote';
 import Comment from 'pages/quotes/comment';
+import Comments from 'pages/Comments';
 
 const App: FC = () => {
     const location = useLocation();
@@ -76,6 +77,7 @@ const App: FC = () => {
                     <Route path="/quotes/test/" element={<Comment />} />
                     <Route path="/admin/dashboard" element={<Dashboard />} />
                     <Route path="/admin/tags" element={<TagsIndexPage />} />
+                    <Route path="/admin/comments" element={<Comments />} />
                 </Route>
                 <Route element={<Layout userlogOut={logOut} layoutDesign="reglogbackground" isNotDark />}>
                     <Route path="login" element={<Login />} />

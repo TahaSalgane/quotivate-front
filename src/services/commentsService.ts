@@ -13,3 +13,4 @@ export const createComment = (values: any) =>
 
 export const deleteComment = (id: string) => httpService.delete(`${endPoint}/${id}`);
 export const updateComment = (id: any, data: any) => httpService.put(`${endPoint}/${id}`, data);
+export const getAllComments = () => httpService.get(`${endPoint}/`);

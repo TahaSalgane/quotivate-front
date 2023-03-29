@@ -2,7 +2,14 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGauge, faUsers, faQuoteRight, faRightFromBracket, faTags } from '@fortawesome/free-solid-svg-icons';
+import {
+    faGauge,
+    faUsers,
+    faQuoteRight,
+    faRightFromBracket,
+    faTags,
+    faComment,
+} from '@fortawesome/free-solid-svg-icons';
 
 type Props = {
     userlogOut: () => void;
@@ -29,6 +36,10 @@ const Sidebar: React.FC<Props> = ({ userlogOut }: Props) => {
                 <NavLink to="/admin/tags" className="nav-link text-white" end>
                     <FontAwesomeIcon size="xs" className="me-1" icon={faTags} />
                     Tags{' '}
+                </NavLink>
+                <NavLink to="/admin/comments" className="nav-link text-white" end>
+                    <FontAwesomeIcon size="xs" className="me-1" icon={faComment} />
+                    Comments{' '}
                 </NavLink>
                 <div onClick={() => userlogOut()} className="text-white" role="button" style={{ marginTop: '62vh' }}>
                     <FontAwesomeIcon className="me-1 fa-1x" icon={faRightFromBracket} />

@@ -11,6 +11,7 @@ import QuoteInterface from 'types/interfaces/quote.interface';
 import ImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import AddComment from 'pages/comments/AddComment';
 import CommentList from 'pages/comments/CommentList';
+import { CommentInterface } from 'types/interfaces/comment.interface';
 
 interface Slide extends ReactImageGalleryItem {
     content?: string;
@@ -24,12 +25,16 @@ const DetailQuote: React.FC = () => {
     const { id } = useParams<idparams>();
     const [quote, setQuote] = useState<QuoteInterface[] | any>([]);
     const [fontSize, setFontSize] = useState('20px');
+    const [comments, setComments] = useState<CommentInterface[]>([]);
+    const [quoteId, setQuoteId] = useState('');
 
     useEffect(() => {
         const loadData = async () => {
             try {
                 const { data } = await getSingleQuote(id as any);
                 setQuote(data.realData);
+                setQuoteId(data.realData._id);
+                setComments(data.realData.comments);
             } catch (error) {
                 console.log(error);
             }
@@ -40,8 +45,7 @@ const DetailQuote: React.FC = () => {
         if (quote.content) {
             const words = quote.content.split(' ').length;
             if (words < 10) {
-                setFontSize('3.3vw');
-                console.log(quote.tags[0].name);
+                setFontSize('2.8vw');
             } else if (words >= 10 && words <= 15) {
                 setFontSize('2.5vw');
             } else if (words >= 15 && words <= 25) {
@@ -55,6 +59,9 @@ const DetailQuote: React.FC = () => {
             }
         }
     }, [quote.content]);
+    const handleCommentAdded = (comment: CommentInterface) => {
+        setComments([comment, ...comments]); // Add the newly added comment to the comments state
+    };
     const slides: Slide[] = [
         {
             original: 'https://picsum.photos/id/1052/1000/600/',
@@ -149,26 +156,28 @@ const DetailQuote: React.FC = () => {
                     />
                 </Col>
                 <Col md={3}>
-                    <span style={{ marginLeft: '15px', color: '#999999', fontSize: '14px' }}>
-                        tags :&nbsp;&nbsp;
+                    <span style={{ marginLeft: '15px', fontWeight: '600', color: 'black', fontSize: '30px' }}>
+                        {' '}
+                        Quote tags :&nbsp;&nbsp;
+                    </span>
+                    <span style={{ marginLeft: '1px', fontWeight: '600', color: 'black', fontSize: '30px' }}>
                         {quote.tags?.map((d: any, index: number) => (
                             <Link key={index} to={`/tag/${d.name}`} className="text-secondary">
                                 {d.name}
                             </Link>
                         ))}
                     </span>
-                    <Row>fzf</Row>
                 </Col>
-                <p style={{ fontSize: fontSize }} className="detail-quote-content">
+                <p style={{ fontSize: '35px' }} className="detail-quote-content">
                     &apos; {quote.content}
                 </p>
-                <p style={{ fontSize: fontSize }} className="detail-quote-author">
+                <p style={{ fontSize: '30px' }} className="detail-quote-author">
                     -{quote.author}
                 </p>{' '}
             </Row>
-            <AddComment comments={quote.comments!} quoteId={quote?._id} />
+            <AddComment quoteId={quoteId} onCommentAdded={handleCommentAdded} />
             {/* <CommentList comments={quote.comments} /> */}
-            <CommentList comments={[{ _id: '1' }]} />
+            <CommentList comments={comments} />
         </Container>
     );
 };

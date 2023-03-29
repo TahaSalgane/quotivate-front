@@ -4,7 +4,7 @@ import { Col, Button, Row, Form } from 'react-bootstrap';
 // import { updateQuote } from 'services/CommentsService';
 import { commentSchema } from 'utils/YupValidation';
 import { CommentInterface } from 'types/interfaces/comment.interface';
-
+import { updateComment } from 'services/commentsService';
 type Props = {
     setShowUpdateModal: (state: boolean) => void;
     comments: CommentInterface[];
@@ -12,25 +12,26 @@ type Props = {
     currentComment: CommentInterface;
 };
 const UpdateForm: React.FC<Props> = ({ setShowUpdateModal, comments, setComments, currentComment }: Props) => {
-    const submitForm = async () => {
-        // values: CommentInterface
-        // const {
-        //     data: { realData },
-        // } = await updateQuote(values);
-        // const index = Comments.findIndex((tags: CommentInterface) => tags._id.toString() === values._id.toString());
-        // const listUpdate = [...Comments];
-        // listUpdate[index] = realData;
-        // setComents(listUpdate);
-        // setShowUpdateModal(false);
-        console.log(setShowUpdateModal);
+    const submitForm = async (values: CommentInterface | any) => {
+        console.log(currentComment._id);
+        const {
+            data: { realData },
+        } = await updateComment(currentComment._id, values);
+        const index = comments.findIndex(
+            (comment: CommentInterface | any) => comment._id.toString() === values._id.toString(),
+        );
+        const listUpdate = [...comments];
+        listUpdate[index] = realData;
+        setComments(listUpdate);
+        setShowUpdateModal(false);
         console.log(comments);
-        console.log(setComments);
     };
     return (
         <Formik
             validationSchema={commentSchema}
             onSubmit={submitForm}
             initialValues={{
+                _id: currentComment._id,
                 text: currentComment.text,
             }}
         >

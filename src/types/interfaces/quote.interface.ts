@@ -9,3 +9,12 @@ export default interface QuoteInterface {
     tags: string[] | TagFormValues[];
     comments?: CommentInterface[];
 }
+export interface DashBoardQuoteInterface {
+    _id: string;
+    content: string;
+    author: string;
+    likes?: string[] | any[];
+    tags: string[] | TagFormValues[];
+    comments?: CommentInterface[];
+    createdAt?: any;
+}

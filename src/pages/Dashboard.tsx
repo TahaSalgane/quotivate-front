@@ -7,12 +7,14 @@ import CountUp from 'react-countup';
 import { getAllUsers } from 'services/usersService';
 import UserInterface from 'types/interfaces/user.interface';
 import { getAllOfQuotes } from 'services/quotesService';
-import QuoteInterface from 'types/quote.interface';
+import { DashBoardQuoteInterface } from 'types/interfaces/quote.interface';
 import { TagFormValues } from 'types/interfaces/formValidate.interface';
 import { getTags } from 'services/tagsService';
 import { getAllComments } from 'services/commentsService';
 import { CommentInterface } from 'types/interfaces/comment.interface';
 import { Line } from 'react-chartjs-2';
+import moment from 'moment';
+
 // import { Chart as ChartJS, LinearScale, CategoryScale, PointElement } from 'chart.js';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
@@ -20,21 +22,22 @@ Chart.register(...registerables);
 // ChartJS.register(CategoryScale, LinearScale, PointElement);
 const Dashboard: React.FC = () => {
     const [users, setUsers] = useState<UserInterface[]>([]);
-    const [quotes, setQuotes] = useState<QuoteInterface[]>([]);
+    const [quotes, setQuotes] = useState<DashBoardQuoteInterface[]>([]);
     const [tags, setTags] = useState<TagFormValues[]>([]);
     const [comments, setComments] = useState<CommentInterface[]>([]);
 
     useEffect(() => {
         const loadData = async () => {
             try {
-                const arr = [];
                 const { data } = await getAllUsers();
                 setUsers(data.realData);
                 const usersData = await getAllOfQuotes();
                 setQuotes(usersData.data.realData);
-                usersData.data.realData.map((item: QuoteInterface) => arr.push(item._id));
+                console.log(usersData.data.realData);
                 const res = await getTags();
                 setTags(res.data.realData);
+                console.log(res.data.realData);
+
                 const commentsData = await getAllComments();
                 setComments(commentsData.data.realData);
             } catch (error) {
@@ -43,17 +46,70 @@ const Dashboard: React.FC = () => {
         };
         loadData();
     }, []);
+    const latestDays = [];
+    for (let i = 0; i < 7; i++) {
+        const day = moment().subtract(i, 'days');
+        latestDays.unshift(day.format('D MMM'));
+    }
+    const commentsByDay: any = {};
+    // const usersByDay: any = {};
+    const quotesByDay: any = {};
+    comments.forEach((comment) => {
+        const dayOfWeek = moment(comment.createdAt).format('D MMM');
+        if (!commentsByDay[dayOfWeek]) {
+            commentsByDay[dayOfWeek] = 1;
+        } else {
+            commentsByDay[dayOfWeek]++;
+        }
+    });
+
+    // users.forEach((user) => {
+    //     const dayOfWeek = moment(user.createdAt).format('D MMM');
+    //     if (!usersByDay[dayOfWeek]) {
+    //         usersByDay[dayOfWeek] = 1;
+    //     } else {
+    //         usersByDay[dayOfWeek]++;
+    //     }
+    // });
+
+    quotes.forEach((quote) => {
+        const dayOfWeek = moment(quote.createdAt).format('D MMM');
+        if (!quotesByDay[dayOfWeek]) {
+            quotesByDay[dayOfWeek] = 1;
+        } else {
+            quotesByDay[dayOfWeek]++;
+        }
+    });
     const data = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        labels: latestDays,
         datasets: [
             {
                 label: 'Number of Quotes',
-                data: [quotes.length],
-                borderColor: 'rgba(255, 99, 132, 1)',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                data: latestDays.map((day) => quotesByDay[day] || 0),
                 fill: false,
+                borderColor: 'rgba(75,192,192,1)',
             },
+            {
+                label: 'Number of Comments',
+                data: latestDays.map((day) => commentsByDay[day] || 0),
+                fill: false,
+                borderColor: 'green',
+            },
+            // {
+            //     label: 'Number of Users',
+            //     data: Object.values(usersByDay),
+            //     fill: false,
+            //     borderColor: 'grey',
+            // },
         ],
+    };
+
+    const options: any = {
+        scales: {
+            y: {
+                beginAtZero: true,
+            },
+        },
     };
     return (
         <>
@@ -163,7 +219,10 @@ const Dashboard: React.FC = () => {
                         </Card>
                     </Col>
                 </Row>
-                <Line data={data} />
+                <Col lg="6" sm="12">
+                    {' '}
+                    <Line data={data} options={options} />
+                </Col>
             </Container>
         </>
     );

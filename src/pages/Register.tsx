@@ -12,9 +12,9 @@ const Register: React.FC = () => {
     const navigation = useNavigate();
     const submitForm = async (values: registerFormValues) => {
         try {
-            const res = await registerUser(values);
-            console.log(res);
-            toast.success('Register has been successful !');
+            const { data } = await registerUser(values);
+            // console.log(data.realData);
+            toast.success(data.realData, { autoClose: 2000 });
             navigation('/login');
         } catch (excep: any) {
             setErrorMessage(excep.message);

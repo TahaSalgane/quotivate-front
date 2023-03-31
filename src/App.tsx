@@ -24,6 +24,7 @@ import getUser from 'utils/helper';
 import DetailQuote from 'pages/quotes/DetailQuote';
 import Comment from 'pages/quotes/comment';
 import Comments from 'pages/Comments';
+import VerifyEmail from 'pages/verify-email/VerifyEmail';
 
 const App: FC = () => {
     const location = useLocation();
@@ -73,6 +74,7 @@ const App: FC = () => {
                     />
                     <Route path="/admin/quotes" element={<QuotesIndexPage />} />
                     <Route path="/tag/:tag" element={<Tag />} />
+                    <Route path="/users/:userId/verify/:token" element={<VerifyEmail />} />
                     <Route path="/quotes/details/:id" element={<DetailQuote />} />
                     <Route path="/quotes/test/" element={<Comment />} />
                     <Route path="/admin/dashboard" element={<Dashboard />} />

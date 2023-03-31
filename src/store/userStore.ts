@@ -12,6 +12,8 @@ export interface StoreStateInterface {
     loading: boolean;
     setLoadingTrue: () => void;
     setLoadingFalse: () => void;
+    isEmailVerified: boolean;
+    setIsEmailVerified: () => void;
 }
 
 const userStore = create<StoreStateInterface>()(
@@ -23,6 +25,8 @@ const userStore = create<StoreStateInterface>()(
             loading: false,
             setLoadingTrue: () => set({ loading: true }),
             setLoadingFalse: () => set({ loading: false }),
+            isEmailVerified: false,
+            setIsEmailVerified: () => set({ isEmailVerified: true }),
         }),
         {
             name: 'zustore',
@@ -40,6 +44,8 @@ const userStoreWithDevTools = create<StoreStateInterface>()(
                 loading: false,
                 setLoadingTrue: () => set({ loading: true }),
                 setLoadingFalse: () => set({ loading: false }),
+                isEmailVerified: false,
+                setIsEmailVerified: () => set({ isEmailVerified: true }),
             }),
             {
                 name: 'zustore',

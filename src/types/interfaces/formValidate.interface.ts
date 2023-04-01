@@ -15,6 +15,10 @@ export interface loginFormValues {
     email: string;
     password: string;
 }
+export interface resetPasswordFormValues {
+    password: string;
+    confirmpassword: string;
+}
 export interface registerFormValues {
     username: string;
     email: string;

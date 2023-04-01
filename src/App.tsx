@@ -25,6 +25,7 @@ import DetailQuote from 'pages/quotes/DetailQuote';
 import Comment from 'pages/quotes/comment';
 import Comments from 'pages/Comments';
 import VerifyEmail from 'pages/verify-email/VerifyEmail';
+import ResetPaasword from 'pages/ResetPassword';
 
 const App: FC = () => {
     const location = useLocation();
@@ -85,6 +86,7 @@ const App: FC = () => {
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
                     <Route path="forgotpassword" element={<Forgotpassword />} />
+                    <Route path="/reset-password/:userId/:token" element={<ResetPaasword />} />
                 </Route>
             </Routes>
         </>

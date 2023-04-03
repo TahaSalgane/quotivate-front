@@ -4,12 +4,13 @@ import { Formik } from 'formik';
 import { toast } from 'react-toastify';
 import { forgotSchema } from 'utils/YupValidation';
 import { forgotFormValues } from 'types/interfaces/formValidate.interface';
+import { forgotPassword } from 'services/passwordService';
 
 const Forgotpassword: React.FC = () => {
     const submitForm = async (values: forgotFormValues) => {
         try {
-            console.log(values);
-            toast.success('Tag created successfully', { autoClose: 3000 });
+            const { data } = await forgotPassword(values.email);
+            toast.success(data.realData, { autoClose: 3000 });
         } catch (excep: any) {
             toast.error(excep.message, { autoClose: 3000 });
         }

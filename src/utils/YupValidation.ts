@@ -23,6 +23,12 @@ export const registerSchema = Yup.object().shape({
 export const forgotSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Required'),
 });
+export const resetPasswordSchema = Yup.object().shape({
+    password: Yup.string().min(5, 'Must be 5 characters or more').required('required'),
+    confirmpassword: Yup.string()
+        .oneOf([Yup.ref('password'), null as any], 'password not matched')
+        .required('required'),
+});
 export const commentSchema = Yup.object().shape({
     text: Yup.string().required('Required'),
 });

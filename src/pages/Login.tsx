@@ -23,7 +23,7 @@ const Login: React.FC = () => {
             const userDecoded = getUser(token);
             setUser(userDecoded!);
             navigation('/');
-            toast.success('Tag created successfully', { autoClose: 3000 });
+            toast.success('You has been login with successfully', { autoClose: 1000 });
         } catch (excep: any) {
             toast.error(excep.message, { autoClose: 3000 });
             console.log(excep);

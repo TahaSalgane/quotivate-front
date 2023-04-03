@@ -6,11 +6,9 @@ export interface QuoteFormValues {
 export interface TagFormValues {
     _id?: string;
     name: string;
+    createdAt?: any;
 }
-export interface TagFormValues {
-    _id?: string;
-    name: string;
-}
+
 export interface loginFormValues {
     email: string;
     password: string;

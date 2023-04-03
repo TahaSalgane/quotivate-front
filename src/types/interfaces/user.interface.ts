@@ -4,4 +4,5 @@ export default interface UserInterface {
     username: string;
     isAdmin: boolean;
     status: number;
+    createdAt?: any;
 }

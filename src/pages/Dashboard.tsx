@@ -12,7 +12,7 @@ import { TagFormValues } from 'types/interfaces/formValidate.interface';
 import { getTags } from 'services/tagsService';
 import { getAllComments } from 'services/commentsService';
 import { CommentInterface } from 'types/interfaces/comment.interface';
-import { Line } from 'react-chartjs-2';
+import { Line, Bar } from 'react-chartjs-2';
 import moment from 'moment';
 
 // import { Chart as ChartJS, LinearScale, CategoryScale, PointElement } from 'chart.js';
@@ -52,25 +52,33 @@ const Dashboard: React.FC = () => {
         latestDays.unshift(day.format('D MMM'));
     }
     const commentsByDay: any = {};
-    // const usersByDay: any = {};
+    const usersByDay: any = {};
     const quotesByDay: any = {};
-    comments.forEach((comment) => {
-        const dayOfWeek = moment(comment.createdAt).format('D MMM');
-        if (!commentsByDay[dayOfWeek]) {
-            commentsByDay[dayOfWeek] = 1;
+    const tagsByDay: any = {};
+    const testing = (dataa: any, object: any) => {
+        dataa.forEach((data: any) => {
+            const dayOfWeek = moment(data.createdAt).format('D MMM');
+            if (!object[dayOfWeek]) {
+                object[dayOfWeek] = 1;
+            } else {
+                object[dayOfWeek]++;
+            }
+        });
+    };
+
+    testing(comments, commentsByDay);
+    testing(users, usersByDay);
+    testing(quotes, quotesByDay);
+    testing(tags, tagsByDay);
+
+    users.forEach((user) => {
+        const dayOfWeek = moment(user.createdAt).format('D MMM');
+        if (!usersByDay[dayOfWeek]) {
+            usersByDay[dayOfWeek] = 1;
         } else {
-            commentsByDay[dayOfWeek]++;
+            usersByDay[dayOfWeek]++;
         }
     });
-
-    // users.forEach((user) => {
-    //     const dayOfWeek = moment(user.createdAt).format('D MMM');
-    //     if (!usersByDay[dayOfWeek]) {
-    //         usersByDay[dayOfWeek] = 1;
-    //     } else {
-    //         usersByDay[dayOfWeek]++;
-    //     }
-    // });
 
     quotes.forEach((quote) => {
         const dayOfWeek = moment(quote.createdAt).format('D MMM');
@@ -84,10 +92,10 @@ const Dashboard: React.FC = () => {
         labels: latestDays,
         datasets: [
             {
-                label: 'Number of Quotes',
-                data: latestDays.map((day) => quotesByDay[day] || 0),
+                label: 'Number of Users',
+                data: latestDays.map((day) => usersByDay[day] || 0),
                 fill: false,
-                borderColor: 'rgba(75,192,192,1)',
+                borderColor: 'grey',
             },
             {
                 label: 'Number of Comments',
@@ -95,15 +103,26 @@ const Dashboard: React.FC = () => {
                 fill: false,
                 borderColor: 'green',
             },
-            // {
-            //     label: 'Number of Users',
-            //     data: Object.values(usersByDay),
-            //     fill: false,
-            //     borderColor: 'grey',
-            // },
+            {
+                label: 'Number of Comments',
+                data: latestDays.map((day) => tagsByDay[day] || 0),
+                fill: false,
+                borderColor: '#0275d8',
+            },
         ],
     };
-
+    const quoteData = {
+        labels: latestDays,
+        datasets: [
+            {
+                label: 'Number of Quotes',
+                data: latestDays.map((day) => quotesByDay[day] || 0),
+                backgroundColor: 'grey',
+                borderColor: 'grey',
+                borderWidth: 1,
+            },
+        ],
+    };
     const options: any = {
         scales: {
             y: {
@@ -222,6 +241,10 @@ const Dashboard: React.FC = () => {
                 <Col lg="6" sm="12">
                     {' '}
                     <Line data={data} options={options} />
+                </Col>
+                <Col lg="6" sm="12">
+                    {' '}
+                    <Bar data={quoteData} options={options} />
                 </Col>
             </Container>
         </>

@@ -27,7 +27,7 @@ const ResetPaasword: React.FC = () => {
             }
         };
         getresetPass();
-    }, []);
+    }, [userId, token]);
     const submitForm = async (values: resetPasswordFormValues) => {
         try {
             console.log(userId);

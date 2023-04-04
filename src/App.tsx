@@ -73,14 +73,42 @@ const App: FC = () => {
                             </PageGuard>
                         }
                     />
-                    <Route path="/admin/quotes" element={<QuotesIndexPage />} />
+                    <Route
+                        path="/admin/quotes"
+                        element={
+                            <PageGuard guarded isAdmin>
+                                <QuotesIndexPage />
+                            </PageGuard>
+                        }
+                    />
                     <Route path="/tag/:tag" element={<Tag />} />
                     <Route path="/users/:userId/verify/:token" element={<VerifyEmail />} />
                     <Route path="/quotes/details/:id" element={<DetailQuote />} />
                     <Route path="/quotes/test/" element={<Comment />} />
-                    <Route path="/admin/dashboard" element={<Dashboard />} />
-                    <Route path="/admin/tags" element={<TagsIndexPage />} />
-                    <Route path="/admin/comments" element={<Comments />} />
+                    <Route
+                        path="/admin/dashboard"
+                        element={
+                            <PageGuard guarded isAdmin>
+                                <Dashboard />
+                            </PageGuard>
+                        }
+                    />
+                    <Route
+                        path="/admin/tags"
+                        element={
+                            <PageGuard guarded isAdmin>
+                                <TagsIndexPage />
+                            </PageGuard>
+                        }
+                    />
+                    <Route
+                        path="/admin/comments"
+                        element={
+                            <PageGuard guarded isAdmin>
+                                <Comments />
+                            </PageGuard>
+                        }
+                    />
                 </Route>
                 <Route element={<Layout userlogOut={logOut} layoutDesign="reglogbackground" isNotDark />}>
                     <Route path="login" element={<Login />} />

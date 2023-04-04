@@ -37,11 +37,11 @@ export const Quote: React.FC<props> = ({ data, quotes, setQuotes }: props) => {
     };
     return (
         <>
-            <Card text="white" style={{ width: '90%' }} className="mb-2 bg-dark">
+            <Card style={{ width: '90%' }} className="mb-2 testing">
                 <Card.Body>
                     <FontAwesomeIcon icon={faQuoteLeft} className="fa-xs" />
                     <Card.Text>
-                        <Link style={{ textDecoration: 'none', color: 'gray' }} to={`/Quotes/details/${data._id}`}>
+                        <Link style={{ textDecoration: 'none', color: 'black' }} to={`/Quotes/details/${data._id}`}>
                             {data.content}
                         </Link>
                     </Card.Text>
@@ -55,14 +55,14 @@ export const Quote: React.FC<props> = ({ data, quotes, setQuotes }: props) => {
                                 style={{ cursor: 'pointer' }}
                                 className={clsx({
                                     'text-danger': iLikedIt,
-                                    'text-white': !iLikedIt,
+                                    'text-black': !iLikedIt,
                                 })}
                                 onClick={() => toggleLikeClick(data._id)}
                                 icon={faHeart}
                             />
                             <span className="m-2"> 1</span>
                             <Link to={`/quote/{quote.id}`}>
-                                <FontAwesomeIcon icon={faComment} className="text-white" />
+                                <FontAwesomeIcon icon={faComment} className="text-black" />
                             </Link>
                         </Col>
                     </Row>

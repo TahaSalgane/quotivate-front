@@ -15,14 +15,18 @@ const VerifyEmail: React.FC = () => {
     useEffect(() => {
         const verify = async () => {
             try {
+                await verifyEmail(userId, token);
+                useUserStore.getState().setIsEmailVerified();
                 console.log(isEmailVerifie);
-                const { data } = await verifyEmail(userId, token);
-                console.log(data);
-                if (data.realData === 'invalid link') {
-                    useUserStore.getState().setIsEmailnotVerified(); // update the store
-                } else {
-                    useUserStore.getState().setIsEmailVerified();
-                } // update the store
+
+                // console.log(data);
+                // if (data.realData != 'invalid link') {
+                //     useUserStore.getState().setIsEmailVerified(); // update the store
+                //     console.log('object');
+                // }
+                // else {
+                //     useUserStore.getState().setIsEmailVerified();
+                // } // update the store
             } catch (error) {
                 console.log(error);
             }

@@ -77,18 +77,24 @@ const Quotes: React.FC = () => {
     };
     return (
         <div className="">
-            <BreadCrumbs
-                data={[
-                    {
-                        text: 'Home',
-                        path: '/',
-                    },
-                    {
-                        text: 'Quotes',
-                        active: true,
-                    },
-                ]}
-            />
+            <div className="mt-4 mx-3">
+                <BreadCrumbs
+                    data={[
+                        {
+                            text: 'Home',
+                            path: '/',
+                        },
+                        {
+                            text: 'Dashboard',
+                            path: '/admin/dashboard',
+                        },
+                        {
+                            text: 'Quotes',
+                            active: true,
+                        },
+                    ]}
+                />
+            </div>
             <Button
                 className="m-4"
                 onClick={() => setOpen(!open)}

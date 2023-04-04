@@ -14,6 +14,9 @@ const Home: React.FC = () => {
     const [quoteHeader, setQuoteHeader] = useState<string>('');
     const [tag, setTag] = useState<CateogieInterface[]>([]);
     const [pageNumber, setPageNumber] = useState<number>(2);
+    const [activeButton, setActiveButton] = useState<string>('populaire');
+    const [searchTag, setSearchTag] = useState<string>('');
+
     useEffect(() => {
         const loadData = async () => {
             try {
@@ -44,6 +47,7 @@ const Home: React.FC = () => {
             const { data } = await getLatestQuotes(1);
             setQuotes(data.realData);
             setPageNumber(1);
+            setActiveButton('latest');
         } catch (error) {
             console.log(error);
         }
@@ -53,10 +57,14 @@ const Home: React.FC = () => {
             setQuoteHeader('Populaire Quotes');
             const { data } = await getQuotes(pageNumber);
             setQuotes(data.realData);
+            setActiveButton('populaire');
         } catch (error) {
             console.log(error);
         }
     };
+    const filteredTags = tag.filter((tags: any) => {
+        return tags.name.toLocaleLowerCase().includes(searchTag);
+    });
     return (
         <Container>
             <BreadCrumbs
@@ -70,10 +78,16 @@ const Home: React.FC = () => {
             <Row className="mt-5">
                 <Col md={8}>
                     <h1>{quoteHeader}</h1>
-                    <button onClick={PopulaireQuotes}>
+                    <button
+                        className={`home-buttons button ${activeButton === 'populaire' ? 'active' : ''}`}
+                        onClick={PopulaireQuotes}
+                    >
                         <h4>Populaire Quotes</h4>
                     </button>{' '}
-                    <button onClick={latestQuotes}>
+                    <button
+                        className={`mt-4 mb-3 home-buttons button ${activeButton === 'latest' ? 'active' : ''}`}
+                        onClick={latestQuotes}
+                    >
                         <h4>Latest Quotes</h4>
                     </button>
                     <InfiniteScroll
@@ -87,11 +101,20 @@ const Home: React.FC = () => {
                         ))}
                     </InfiniteScroll>
                 </Col>
-                <Col md={4}>
-                    <h3>tag:</h3>
+                <Col md={4} style={{ position: 'sticky', top: '10%', height: '100%' }}>
+                    <h3>tags:</h3>
+                    <input
+                        type="text"
+                        placeholder="search for a tag"
+                        className="w-75"
+                        onChange={(e) => {
+                            const searchField = e.target.value.toLocaleLowerCase();
+                            setSearchTag(searchField);
+                        }}
+                    />
                     <Row>
                         <Col md={6}>
-                            {[...tag].splice(0, Math.ceil(tag.length / 2)).map((tag) => (
+                            {[...filteredTags].splice(0, Math.ceil(tag.length / 2)).map((tag) => (
                                 <Link to={`/tag/${tag.name}`} key={tag._id}>
                                     {tag.name} <br />
                                 </Link>
@@ -99,9 +122,10 @@ const Home: React.FC = () => {
                         </Col>
                         <Col md={6}>
                             {/* {Data.tag.map((tag: any) => ( */}
-                            {[...tag].splice(-Math.ceil(tag.length / 2)).map((tag) => (
+                            {[...filteredTags].splice(-Math.ceil(tag.length / 2)).map((tag: any) => (
                                 <Link to={`/tag/${tag.name}`} key={tag._id}>
-                                    {tag.name} <br />
+                                    {tag.name} {tag.length}
+                                    <br />
                                 </Link>
                             ))}
                         </Col>

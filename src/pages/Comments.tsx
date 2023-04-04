@@ -5,6 +5,7 @@ import { getAllComments } from 'services/commentsService';
 import CustomModal from 'components/ui/costumeModal';
 import { deleteComment } from 'services/commentsService';
 import { toast } from 'react-toastify';
+import BreadCrumbs from 'components/ui/breadCrumbs';
 const Comments: React.FC = () => {
     const [comments, setComments] = useState<CommentInterface[]>([]);
     const [currentComment, setCurrentComment] = useState<CommentInterface | null>(null);
@@ -36,6 +37,24 @@ const Comments: React.FC = () => {
 
     return (
         <div className="">
+            <div className="mt-4 mx-3">
+                <BreadCrumbs
+                    data={[
+                        {
+                            text: 'Home',
+                            path: '/',
+                        },
+                        {
+                            text: 'Dashboard',
+                            path: '/admin/dashboard',
+                        },
+                        {
+                            text: 'Users',
+                            active: true,
+                        },
+                    ]}
+                />
+            </div>
             <h2 className="m-5">All Users</h2>
             <Table className="w-75 m-4 text-black" striped bordered hover variant="white">
                 <thead>

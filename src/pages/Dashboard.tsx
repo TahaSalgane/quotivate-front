@@ -17,6 +17,7 @@ import moment from 'moment';
 
 // import { Chart as ChartJS, LinearScale, CategoryScale, PointElement } from 'chart.js';
 import { Chart, registerables } from 'chart.js';
+import BreadCrumbs from 'components/ui/breadCrumbs';
 Chart.register(...registerables);
 
 // ChartJS.register(CategoryScale, LinearScale, PointElement);
@@ -133,6 +134,20 @@ const Dashboard: React.FC = () => {
     return (
         <>
             <Container fluid className="mt-5">
+                <div className="mt-4 mx-3">
+                    <BreadCrumbs
+                        data={[
+                            {
+                                text: 'Home',
+                                path: '/',
+                            },
+                            {
+                                text: 'Dashboard',
+                                active: true,
+                            },
+                        ]}
+                    />
+                </div>
                 <Row>
                     <Col lg="3" sm="6">
                         <Card className="pt-4 card-stats" style={{ height: '200px' }}>

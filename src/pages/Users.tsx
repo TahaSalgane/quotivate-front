@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Table } from 'react-bootstrap';
 import { getAllUsers, disactiveUser, activeUser, banUser } from 'services/usersService';
 import UserInterface from '../types/interfaces/user.interface';
+import BreadCrumbs from 'components/ui/breadCrumbs';
 
 const Users: React.FC = () => {
     const [users, setUsers] = useState<UserInterface[]>([]);
@@ -50,6 +51,24 @@ const Users: React.FC = () => {
     };
     return (
         <div className="">
+            <div className="mt-4 mx-3">
+                <BreadCrumbs
+                    data={[
+                        {
+                            text: 'Home',
+                            path: '/',
+                        },
+                        {
+                            text: 'Dashboard',
+                            path: '/admin/dashboard',
+                        },
+                        {
+                            text: 'Users',
+                            active: true,
+                        },
+                    ]}
+                />
+            </div>
             <h2 className="m-5">All Users</h2>
             <Table className="w-75 m-4 text-black" striped bordered hover variant="white">
                 <thead>

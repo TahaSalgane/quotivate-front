@@ -12,6 +12,7 @@ import UpdateForm from 'pages/tags/components/UpdateForm';
 import { toast } from 'react-toastify';
 import { tagSchema } from 'utils/YupValidation';
 import { TagFormValues } from 'types/interfaces/formValidate.interface';
+import BreadCrumbs from 'components/ui/breadCrumbs';
 
 const TagsIndexPage: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
@@ -67,7 +68,25 @@ const TagsIndexPage: React.FC = () => {
     };
 
     return (
-        <div className="">
+        <div>
+            <div className="mt-4 mx-3">
+                <BreadCrumbs
+                    data={[
+                        {
+                            text: 'Home',
+                            path: '/',
+                        },
+                        {
+                            text: 'Dashboard',
+                            path: '/admin/dashboard',
+                        },
+                        {
+                            text: 'Tags',
+                            active: true,
+                        },
+                    ]}
+                />
+            </div>
             <Button
                 className="m-4"
                 onClick={() => setOpen(!open)}

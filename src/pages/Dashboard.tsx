@@ -34,11 +34,8 @@ const Dashboard: React.FC = () => {
                 setUsers(data.realData);
                 const usersData = await getAllOfQuotes();
                 setQuotes(usersData.data.realData);
-                console.log(usersData.data.realData);
                 const res = await getTags();
                 setTags(res.data.realData);
-                console.log(res.data.realData);
-
                 const commentsData = await getAllComments();
                 setComments(commentsData.data.realData);
             } catch (error) {
@@ -72,23 +69,6 @@ const Dashboard: React.FC = () => {
     testing(quotes, quotesByDay);
     testing(tags, tagsByDay);
 
-    users.forEach((user) => {
-        const dayOfWeek = moment(user.createdAt).format('D MMM');
-        if (!usersByDay[dayOfWeek]) {
-            usersByDay[dayOfWeek] = 1;
-        } else {
-            usersByDay[dayOfWeek]++;
-        }
-    });
-
-    quotes.forEach((quote) => {
-        const dayOfWeek = moment(quote.createdAt).format('D MMM');
-        if (!quotesByDay[dayOfWeek]) {
-            quotesByDay[dayOfWeek] = 1;
-        } else {
-            quotesByDay[dayOfWeek]++;
-        }
-    });
     const data = {
         labels: latestDays,
         datasets: [
@@ -118,8 +98,8 @@ const Dashboard: React.FC = () => {
             {
                 label: 'Number of Quotes',
                 data: latestDays.map((day) => quotesByDay[day] || 0),
-                backgroundColor: 'grey',
-                borderColor: 'grey',
+                backgroundColor: '#7EC8E3',
+                borderColor: '7EC8E3',
                 borderWidth: 1,
             },
         ],
@@ -253,14 +233,16 @@ const Dashboard: React.FC = () => {
                         </Card>
                     </Col>
                 </Row>
-                <Col lg="6" sm="12">
-                    {' '}
-                    <Line data={data} options={options} />
-                </Col>
-                <Col lg="6" sm="12">
-                    {' '}
-                    <Bar data={quoteData} options={options} />
-                </Col>
+                <Row className="mt-5">
+                    <Col lg="6" sm="12">
+                        {' '}
+                        <Line data={data} options={options} />
+                    </Col>
+                    <Col lg="6" sm="12">
+                        {' '}
+                        <Bar data={quoteData} options={options} />
+                    </Col>
+                </Row>
             </Container>
         </>
     );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Nav, Navbar, NavDropdown, Dropdown, DropdownButton } from 'react-bootstrap/';
+import { Nav, Navbar, Dropdown, DropdownButton } from 'react-bootstrap/';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
@@ -19,18 +19,7 @@ const Navbars: React.FC<props> = ({ isNotDark, userlogOut }: props) => {
 
             <Navbar.Toggle aria-controls="navbarScroll" />
             <Navbar.Collapse id="navbarScroll">
-                <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
-                    <Nav.Link as={NavLink} to="/">
-                        Home
-                    </Nav.Link>
-
-                    <NavDropdown title="Topics" id="navbarScrollingDropdown">
-                        <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                        <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                    </NavDropdown>
-                </Nav>
+                <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll></Nav>
                 {user ? (
                     <DropdownButton variant="dark" id="dropdown-item-button" title={user.username}>
                         <Dropdown.Item as="button">profile</Dropdown.Item> <Dropdown.Divider />

@@ -9,6 +9,8 @@ import { getTags } from 'services/tagsService';
 import BreadCrumbs from 'components/ui/breadCrumbs';
 import { Quote } from 'pages/Quote';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import Autosuggest from 'react-autosuggest';
+
 const Home: React.FC = () => {
     const [quotes, setQuotes] = useState<QuoteInterface[]>([]);
     const [quoteHeader, setQuoteHeader] = useState<string>('');
@@ -16,7 +18,8 @@ const Home: React.FC = () => {
     const [pageNumber, setPageNumber] = useState<number>(2);
     const [activeButton, setActiveButton] = useState<string>('populaire');
     const [searchTag, setSearchTag] = useState<string>('');
-
+    const [inputValue, setInputValue] = useState<string>('');
+    const [suggestions, setSuggestions] = useState<QuoteInterface[]>([]);
     useEffect(() => {
         const loadData = async () => {
             try {
@@ -65,8 +68,46 @@ const Home: React.FC = () => {
     const filteredTags = tag.filter((tags: any) => {
         return tags.name.toLocaleLowerCase().includes(searchTag);
     });
+
+    const getSuggestions = (value: string): QuoteInterface[] => {
+        const inputValue = value.trim().toLowerCase();
+        const inputLength = inputValue.length;
+
+        return inputLength === 0
+            ? []
+            : quotes.filter(
+                  (quote: QuoteInterface) => quote.content.toLowerCase().slice(0, inputLength) === inputValue,
+              );
+    };
+
+    const onSuggestionsFetchRequested = ({ value }: { value: string }) => {
+        setSuggestions(getSuggestions(value));
+    };
+
+    const onSuggestionsClearRequested = () => {
+        setSuggestions([]);
+    };
+
+    const getSuggestionValue = (suggestion: QuoteInterface): string => suggestion.content;
+    // <Link to={`/Quotes/details/{suggestion._id}`}>{suggestion.content}</Link>;
+    const renderSuggestion = (suggestion: QuoteInterface): JSX.Element => (
+        <Link to={`/Quotes/details/${suggestion._id}`}>
+            <div className="custom-suggestion">{suggestion.content}</div>
+        </Link>
+    );
+
+    const onChange = (_: React.FormEvent<HTMLInputElement>, { newValue }: any) => {
+        setInputValue(newValue);
+    };
+
+    const inputProps = {
+        placeholder: 'Search for quote',
+        value: inputValue,
+        className: 'react-autosuggest__input',
+        onChange,
+    };
     return (
-        <Container>
+        <Container className="search-container">
             <BreadCrumbs
                 data={[
                     {
@@ -77,6 +118,26 @@ const Home: React.FC = () => {
             />
             <Row className="mt-5">
                 <Col md={8}>
+                    <div className="search-container">
+                        <i className="fas fa-search"></i>
+
+                        <Autosuggest
+                            suggestions={suggestions}
+                            onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                            onSuggestionsClearRequested={onSuggestionsClearRequested}
+                            getSuggestionValue={getSuggestionValue}
+                            renderSuggestion={renderSuggestion}
+                            inputProps={inputProps}
+                            // theme={{
+                            //     suggestionsContainer: 'react-autosuggest__suggestions-container',
+                            //     suggestionsList: 'react-autosuggest__suggestions-list',
+                            // }}
+                            className="react-autosuggest__container"
+                            suggestionsContainerClassName="react-autosuggest__suggestions-container"
+                            suggestionClassName="react-autosuggest__suggestion"
+                            suggestionHighlightedClassName="react-autosuggest__suggestion--highlighted"
+                        />
+                    </div>
                     <h1>{quoteHeader}</h1>
                     <button
                         className={`home-buttons button ${activeButton === 'populaire' ? 'active' : ''}`}

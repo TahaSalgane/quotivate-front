@@ -11,3 +11,4 @@ export const createQuote = (data: any) => httpService.post(`${endPoint}`, data);
 export const deleteQuote = (id: string) => httpService.delete(`${endPoint}/${id}`);
 export const updateQuote = (data: any) => httpService.put(`${endPoint}/${data._id}`, data);
 export const toggleLike = (id: string) => httpService.put(`${endPoint}/like/${id}`);
+export const searchQuote = (id: string) => httpService.get(`${endPoint}/searching?q=${id}`);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPenToSquare, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import Avatar from './AvatarComment';
 import CustomModal from 'components/ui/costumeModal';
 import UpdateForm from './UpdateFormComment';
@@ -8,6 +8,7 @@ import { CommentInterface } from 'types/interfaces/comment.interface';
 import Moment from 'react-moment';
 import useUserStore, { StoreStateInterface } from 'store/userStore';
 import { deleteComment } from 'services/commentsService';
+import { Dropdown, Row, Col } from 'react-bootstrap';
 type Props = {
     comments: CommentInterface[] | any;
 };
@@ -46,20 +47,58 @@ const CommentList: React.FC<Props> = ({ comments }: Props) => {
             {commentsss.map((comment: any, index: any) => {
                 return (
                     <div key={index} className="comment-item">
-                        <div className="comment-item-info">
-                            <div className="comment-item-user-info">
-                                <Avatar username={comment.username} />
-                                <span className="comment-item-username">{comment.username}</span>
-                            </div>
-                            <div className="comment-item-time">
-                                <Moment fromNow ago>
-                                    {comment.createdAt}
-                                </Moment>{' '}
-                                ago
-                            </div>
-                        </div>
-                        <p className="comment-item-text">{comment.text}</p>
-                        {user?._id === comment.user && (
+                        <Row>
+                            <Col lg="11" sm="12">
+                                <div className="comment-item-info">
+                                    <div className="comment-item-user-info">
+                                        <Avatar username={comment.username} />
+                                        <span className="comment-item-username">{comment.username}</span>
+                                        <div className="mx-3 m comment-item-time">
+                                            <Moment fromNow ago>
+                                                {comment.createdAt}
+                                            </Moment>{' '}
+                                            ago
+                                        </div>
+                                    </div>
+                                </div>
+                                <p className="comment-item-text">{comment.text}</p>
+                            </Col>
+                            <Col lg="1" sm="12">
+                                {user?._id === comment.user && (
+                                    <Dropdown>
+                                        <Dropdown.Toggle
+                                            style={{
+                                                background: 'rgba(206, 206, 206, 0.651)',
+                                                borderRadius: '25px',
+                                                border: '1px black',
+                                                color: 'black',
+                                            }}
+                                        >
+                                            {' '}
+                                            <FontAwesomeIcon icon={faEllipsisV} />
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item href="#">
+                                                {' '}
+                                                <p onClick={() => openUpdateModal(comment)}>
+                                                    <FontAwesomeIcon size="lg" className="me-1" icon={faPenToSquare} />
+                                                    Update
+                                                </p>
+                                            </Dropdown.Item>
+                                            <Dropdown.Item href="#">
+                                                {' '}
+                                                <p onClick={() => openDeleteModal(comment)}>
+                                                    <FontAwesomeIcon size="lg" className="me-1 " icon={faTrash} />{' '}
+                                                    Delete
+                                                </p>
+                                            </Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                )}
+                            </Col>
+                        </Row>
+                        {/* {user?._id === comment.user && (
                             <div className="comment-item-icon-wrapper">
                                 <FontAwesomeIcon
                                     onClick={() => openUpdateModal(comment)}
@@ -77,7 +116,7 @@ const CommentList: React.FC<Props> = ({ comments }: Props) => {
                                     icon={faTrash}
                                 />
                             </div>
-                        )}
+                        )} */}
                         <hr />
                     </div>
                 );

@@ -5,13 +5,19 @@ import { getSingleQuote } from 'services/quotesService';
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import 'react-image-gallery/styles/css/image-gallery.css';
+import { toggleLike } from 'services/quotesService';
+import { toast } from 'react-toastify';
 
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import QuoteInterface from 'types/interfaces/quote.interface';
 import ImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import AddComment from 'pages/comments/AddComment';
 import CommentList from 'pages/comments/CommentList';
 import { CommentInterface } from 'types/interfaces/comment.interface';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import useUserStore, { StoreStateInterface } from 'store/userStore';
+import clsx from 'classnames';
 
 interface Slide extends ReactImageGalleryItem {
     content?: string;
@@ -27,7 +33,9 @@ const DetailQuote: React.FC = () => {
     const [fontSize, setFontSize] = useState('20px');
     const [comments, setComments] = useState<CommentInterface[]>([]);
     const [quoteId, setQuoteId] = useState('');
-
+    const navigation = useNavigate();
+    const user = useUserStore((state: StoreStateInterface) => state.user);
+    const iLikedIt = quote.likes?.map((item: any) => item._id).includes(user?._id!);
     useEffect(() => {
         const loadData = async () => {
             try {
@@ -61,6 +69,17 @@ const DetailQuote: React.FC = () => {
     }, [quote.content]);
     const handleCommentAdded = (comment: CommentInterface) => {
         setComments([comment, ...comments]); // Add the newly added comment to the comments state
+    };
+    const toggleLikeClick = async (id: string) => {
+        try {
+            const {
+                data: { realData },
+            } = await toggleLike(id);
+            setQuote(realData);
+        } catch (Exception) {
+            navigation('/login');
+            toast.error('Please Log in');
+        }
     };
     const slides: Slide[] = [
         {
@@ -168,13 +187,23 @@ const DetailQuote: React.FC = () => {
                         ))}
                     </span>
                 </Col>
-                <p style={{ fontSize: '35px' }} className="detail-quote-content">
-                    &apos; {quote.content}
-                </p>
-                <p style={{ fontSize: '30px' }} className="detail-quote-author">
-                    -{quote.author}
-                </p>{' '}
             </Row>
+            <FontAwesomeIcon
+                style={{ cursor: 'pointer' }}
+                className={clsx({
+                    'text-danger': iLikedIt,
+                    'text-black': !iLikedIt,
+                })}
+                onClick={() => toggleLikeClick(quote._id)}
+                icon={faHeart}
+            />
+            <span> {quote.likes?.length} likes </span>
+            <p style={{ fontSize: '31px', width: '85%' }} className="detail-quote-content">
+                &apos; {quote.content}
+            </p>
+            <p style={{ fontSize: '24px' }} className="detail-quote-author">
+                -{quote.author}
+            </p>{' '}
             <AddComment quoteId={quoteId} onCommentAdded={handleCommentAdded} />
             {/* <CommentList comments={quote.comments} /> */}
             <CommentList comments={comments} />

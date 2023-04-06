@@ -91,7 +91,7 @@ const Home: React.FC = () => {
     const getSuggestionValue = (suggestion: QuoteInterface): string => suggestion.content;
     // <Link to={`/Quotes/details/{suggestion._id}`}>{suggestion.content}</Link>;
     const renderSuggestion = (suggestion: QuoteInterface): JSX.Element => (
-        <Link to={`/Quotes/details/${suggestion._id}`}>
+        <Link style={{ textDecoration: 'none', color: 'black' }} to={`/Quotes/details/${suggestion._id}`}>
             <div className="custom-suggestion">{suggestion.content}</div>
         </Link>
     );
@@ -162,12 +162,12 @@ const Home: React.FC = () => {
                         ))}
                     </InfiniteScroll>
                 </Col>
-                <Col md={4} style={{ position: 'sticky', top: '10%', height: '100%' }}>
+                <Col md={4} style={{ position: 'sticky', top: '10%', height: '100%', paddingLeft: '10%' }}>
                     <h3>tags:</h3>
                     <input
                         type="text"
                         placeholder="search for a tag"
-                        className="w-75"
+                        className="w-100 mb-2"
                         onChange={(e) => {
                             const searchField = e.target.value.toLocaleLowerCase();
                             setSearchTag(searchField);
@@ -176,16 +176,16 @@ const Home: React.FC = () => {
                     <Row>
                         <Col md={6}>
                             {[...filteredTags].splice(0, Math.ceil(tag.length / 2)).map((tag) => (
-                                <Link to={`/tag/${tag.name}`} key={tag._id}>
-                                    {tag.name} <br />
+                                <Link className="link-tag" to={`/tag/${tag.name}`} key={tag._id}>
+                                    #{tag.name} <br />
                                 </Link>
                             ))}
                         </Col>
                         <Col md={6}>
                             {/* {Data.tag.map((tag: any) => ( */}
                             {[...filteredTags].splice(-Math.ceil(tag.length / 2)).map((tag: any) => (
-                                <Link to={`/tag/${tag.name}`} key={tag._id}>
-                                    {tag.name} {tag.length}
+                                <Link className="link-tag" to={`/tag/${tag.name}`} key={tag._id}>
+                                    <span style={{ textDecoration: 'none' }}>#{tag.name}</span>
                                     <br />
                                 </Link>
                             ))}

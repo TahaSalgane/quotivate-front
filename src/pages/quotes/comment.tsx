@@ -1,84 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisV, faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { Dropdown } from 'react-bootstrap/';
+import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
+import DropdownItem from 'react-bootstrap/esm/DropdownItem';
+import DropdownMenu from 'react-bootstrap/esm/DropdownMenu';
 
-interface CommentProps {
-    text: string;
-}
-
-const Comment: React.FC<CommentProps> = ({ text }) => {
+const Comment = () => {
     return (
-        <div className="card mb-3">
-            <div className="card-body">
-                <p className="card-text">{text}</p>
+        <div className="comment">
+            <div className="comment-content">
+                <p>This is a comment</p>
+            </div>
+            <div className="comment-actions">
+                <Dropdown>
+                    <DropdownToggle className="btn btn-link">
+                        <FontAwesomeIcon icon={faEllipsisV} />
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <DropdownItem>
+                            <FontAwesomeIcon icon={faTrashAlt} /> Delete
+                        </DropdownItem>
+                        <DropdownItem>
+                            <FontAwesomeIcon icon={faEdit} /> Edit
+                        </DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
             </div>
         </div>
     );
 };
 
-interface CommentListProps {
-    comments: CommentProps[];
-}
-
-const CommentList: React.FC<CommentListProps> = ({ comments }) => {
-    return (
-        <div>
-            {comments.map((comment, index) => (
-                <Comment key={index} text={comment.text} />
-            ))}
-        </div>
-    );
-};
-
-interface CommentFormProps {
-    onSubmit: (text: string) => void;
-}
-
-const CommentForm: React.FC<CommentFormProps> = ({ onSubmit }) => {
-    const [text, setText] = useState('');
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        onSubmit(text);
-        setText('');
-    };
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-                <label htmlFor="username" className="form-label"></label>
-            </div>
-            <div className="mb-3">
-                <label htmlFor="text" className="form-label">
-                    Comment
-                </label>
-                <textarea
-                    className="form-control"
-                    id="text"
-                    value={text}
-                    onChange={(event) => setText(event.target.value)}
-                />
-            </div>
-            <button type="submit" className="btn btn-primary">
-                Submit
-            </button>
-        </form>
-    );
-};
-
-const CommentSection: React.FC = () => {
-    const [comments, setComments] = useState<CommentProps[]>([]);
-
-    const handleCommentSubmit = (text: string) => {
-        const newComment = { text };
-        setComments([newComment, ...comments]);
-    };
-
-    return (
-        <div>
-            <h2>Comments</h2>
-            <CommentForm onSubmit={handleCommentSubmit} />
-            <CommentList comments={comments} />
-        </div>
-    );
-};
-
-export default CommentSection;
+export default Comment;

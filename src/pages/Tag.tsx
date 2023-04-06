@@ -17,8 +17,9 @@ const Tag = () => {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const { data } = await getQuotesByTag(pageNumber, tag);
+                const { data } = await getQuotesByTag(1, tag);
                 setQuotes(data.realData);
+                console.log(quotes);
             } catch (error) {
                 console.log(error);
             }
@@ -27,29 +28,43 @@ const Tag = () => {
     }, [tag]);
     const fetchData: any = () => {
         const fetchQuotes = async () => {
-            const { data } = await getQuotesByTag(pageNumber, tag);
-            await setPageNumber((prev) => prev + 1);
-            setQuotes(quotes.concat(data.realData));
+            if (pageNumber === 1) {
+                setPageNumber(3);
+                const { data } = await getQuotesByTag(pageNumber, tag);
+                setQuotes(quotes.concat(data.realData));
+            } else {
+                await setPageNumber((prev) => prev + 1);
+                const { data } = await getQuotesByTag(pageNumber, tag);
+                setQuotes(quotes.concat(data.realData));
+            }
         };
         fetchQuotes();
     };
+    console.log(quotes);
+    console.log(pageNumber);
     return (
         <Container>
             <BreadCrumbs
                 data={[
                     {
                         text: 'Home',
+                        path: '/',
+                    },
+                    {
+                        text: tag || 'tag',
                         active: true,
                     },
                 ]}
             />
             <Row className="mt-5">
                 <Col md={8}>
+                    <h3 className="mb-4">{tag} quotes</h3>
                     <InfiniteScroll
-                        dataLength={quotes.length} //This is important field to render the next data
+                        dataLength={quotes.length}
                         next={fetchData}
                         hasMore={true}
                         loader={<h4>Loading...</h4>}
+                        endMessage={<p>No more quotes to display</p>}
                     >
                         {quotes.map((quote: any, i: number) => (
                             <Quote key={i} data={quote} quotes={quotes} setQuotes={setQuotes} />

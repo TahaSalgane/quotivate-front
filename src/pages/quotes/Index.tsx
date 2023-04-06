@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Card, Col, Collapse, Form, Row, Table } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { AxiosResponse } from 'axios';
@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 
 import CustomModal from 'components/ui/costumeModal';
 import BreadCrumbs from 'components/ui/breadCrumbs';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 import QuoteInterface from 'types/interfaces/quote.interface';
 import TagInterface from 'types/interfaces/tag.interface';
@@ -15,7 +16,7 @@ import { createQuote, deleteQuote, getQuotes } from 'services/quotesService';
 import { getTags } from 'services/tagsService';
 import UpdateForm from 'pages/quotes/compontents/UpdateForm';
 import { QuoteFormValues } from 'types/interfaces/formValidate.interface';
-
+import { Typeahead } from 'react-bootstrap-typeahead';
 const Quotes: React.FC = () => {
     const [tags, setTags] = useState<TagInterface[]>([]);
     const [quotes, setQuotes] = useState<QuoteInterface[]>([]);
@@ -23,6 +24,8 @@ const Quotes: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
     const [showModal, setShowModal] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const ref = useRef(null);
+    const [selectedTags, setSelectedTags] = useState<any>([]);
 
     const openDeleteModal = (quote: QuoteInterface) => {
         setCurrentQuote(quote);
@@ -49,11 +52,15 @@ const Quotes: React.FC = () => {
         };
         loadData();
     }, []);
+
     const submitForm = async (values: QuoteFormValues, actions: any) => {
         try {
             setOpen(false);
             console.log('sss');
-            const { data }: AxiosResponse<HttpResponse<QuoteInterface>> = await createQuote(values);
+            const { data }: AxiosResponse<HttpResponse<QuoteInterface>> = await createQuote({
+                ...values,
+                tags: selectedTags,
+            });
             console.log(data);
             setQuotes([...quotes, data.realData!]);
             setOpen(false);
@@ -74,6 +81,12 @@ const Quotes: React.FC = () => {
         const newQuotes = quotes.filter((quote) => quote._id !== id);
         setQuotes(newQuotes);
         setShowModal(false);
+    };
+    const changing = (e: any) => {
+        const data: any = [];
+        e.map((option: any) => data.push(option._id));
+        setSelectedTags(data);
+        console.log(selectedTags);
     };
     return (
         <div className="">
@@ -145,7 +158,17 @@ const Quotes: React.FC = () => {
                                                                 {errors.author}
                                                             </Form.Control.Feedback>
                                                         </Form.Group>
-                                                        <Form.Group className="mb-3" controlId="validationFormik01">
+                                                        <Typeahead
+                                                            defaultSelected={tags.slice(0, 4)}
+                                                            id="public-methods-example"
+                                                            labelKey="name"
+                                                            multiple
+                                                            options={tags}
+                                                            placeholder="Choose a state..."
+                                                            ref={ref}
+                                                            onChange={changing}
+                                                        />
+                                                        {/* <Form.Group className="mb-3" controlId="validationFormik01">
                                                             <Form.Label className="text-dark">Tags :</Form.Label>
                                                             <Form.Control
                                                                 as="select"
@@ -168,7 +191,7 @@ const Quotes: React.FC = () => {
                                                             <Form.Control.Feedback type="invalid">
                                                                 {errors.tags}
                                                             </Form.Control.Feedback>
-                                                        </Form.Group>{' '}
+                                                        </Form.Group>{' '} */}
                                                         <Form.Group className="mb-3" controlId="validationFormik01">
                                                             <Form.Label className="text-dark">Content :</Form.Label>
                                                             <Form.Control

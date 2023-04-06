@@ -223,12 +223,13 @@ button:hover {
 }
 
 .react-autosuggest__input {
-    width: 100%;
+    width: 800px;
     height: 44px;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #dfe1e5;
     border-radius: 24px;
+    margin-left: 30px;
 }
 
 .react-autosuggest__input:focus {
@@ -241,12 +242,17 @@ button:hover {
     position: absolute;
     top: 44px;
     width: 100%;
+    padding-left: 0px;
     max-height: 300px;
     overflow-y: auto;
     border: 1px solid #dfe1e5;
     background-color: #fff;
-    border-radius: 4px;
+    border-radius: 8px;
     z-index: 10;
+    margin-left: 10px;
+}
+.comment-item-time {
+    color: rgba(80, 80, 80, 0.685) !important;
 }
 .custom-suggestion {
     width: 101%;
@@ -254,7 +260,9 @@ button:hover {
 }
 .react-autosuggest__suggestion {
     cursor: pointer;
+    list-style-type: none;
     padding: 10px;
+    background-color: #ffffff;
 }
 
 .react-autosuggest__suggestion--highlighted {
@@ -262,5 +270,9 @@ button:hover {
 }
 
 .react-autosuggest__suggestion:hover {
-    background-color: #f6f8fa;
+    background-color: #cfcfcf;
+}
+.link-tag {
+    text-decoration: none;
+    color: rgb(77, 68, 68);
 }

@@ -223,13 +223,13 @@ button:hover {
 }
 
 .react-autosuggest__input {
-    width: 800px;
+    width: 830px;
     height: 44px;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #dfe1e5;
     border-radius: 24px;
-    margin-left: 30px;
+    margin-left: 15px;
 }
 
 .react-autosuggest__input:focus {
@@ -251,6 +251,10 @@ button:hover {
     z-index: 10;
     margin-left: 10px;
 }
+.react-autosuggest__suggestions-container ul {
+    padding: 0;
+    margin: 0;
+}
 .comment-item-time {
     color: rgba(80, 80, 80, 0.685) !important;
 }
@@ -260,9 +264,9 @@ button:hover {
 }
 .react-autosuggest__suggestion {
     cursor: pointer;
-    list-style-type: none;
+    list-style-type: none !important;
     padding: 10px;
-    background-color: #ffffff;
+    background-color: #aaaaaa1c;
 }
 
 .react-autosuggest__suggestion--highlighted {
@@ -275,4 +279,67 @@ button:hover {
 .link-tag {
     text-decoration: none;
     color: rgb(77, 68, 68);
+}
+.search-icon {
+    margin-right: 10px;
+}
+
+.btn-actived,
+.btn-desactived,
+.btn-unbanned,
+.btn-banned {
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-actived {
+    background-color: rgba(36, 128, 0, 0.733);
+    color: white;
+}
+
+/* Inactive button style */
+.btn-desactived {
+    background-color: rgb(247, 67, 67);
+    color: white;
+}
+
+/* Unbanned button style */
+.btn-unbanned {
+    background-color: rgba(36, 128, 0, 0.733);
+    color: white;
+}
+
+/* Banned button style */
+.btn-banned {
+    background-color: rgb(247, 67, 67);
+    color: white;
+}
+
+/* Hover effects */
+.btn-actived:hover,
+.btn-desactived:hover,
+.btn-unbanned:hover,
+.btn-banned:hover {
+    transform: scale(1.05);
+}
+
+.btn-actived:focus,
+.btn-desactived:focus,
+.btn-unbanned:focus,
+.btn-banned:focus {
+    outline: none;
+}
+
+.btn-actived:hover,
+.btn-unbanned:hover {
+    background-color: #007d31;
+}
+
+.btn-desactived:hover,
+.btn-banned:hover {
+    background-color: #f81b1b;
 }

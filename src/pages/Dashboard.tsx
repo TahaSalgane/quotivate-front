@@ -85,7 +85,7 @@ const Dashboard: React.FC = () => {
                 borderColor: 'green',
             },
             {
-                label: 'Number of Comments',
+                label: 'Number of Tags',
                 data: latestDays.map((day) => tagsByDay[day] || 0),
                 fill: false,
                 borderColor: '#0275d8',

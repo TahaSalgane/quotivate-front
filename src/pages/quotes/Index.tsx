@@ -17,6 +17,9 @@ import { getTags } from 'services/tagsService';
 import UpdateForm from 'pages/quotes/compontents/UpdateForm';
 import { QuoteFormValues } from 'types/interfaces/formValidate.interface';
 import { Typeahead } from 'react-bootstrap-typeahead';
+
+import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const Quotes: React.FC = () => {
     const [tags, setTags] = useState<TagInterface[]>([]);
     const [quotes, setQuotes] = useState<QuoteInterface[]>([]);
@@ -40,6 +43,7 @@ const Quotes: React.FC = () => {
             try {
                 const { data } = await getQuotes(1);
                 setQuotes(data.realData);
+                console.log(data.realData);
             } catch (error) {
                 console.log(error);
             }
@@ -164,34 +168,10 @@ const Quotes: React.FC = () => {
                                                             labelKey="name"
                                                             multiple
                                                             options={tags}
-                                                            placeholder="Choose a state..."
+                                                            placeholder="Choose a tags ..."
                                                             ref={ref}
                                                             onChange={changing}
                                                         />
-                                                        {/* <Form.Group className="mb-3" controlId="validationFormik01">
-                                                            <Form.Label className="text-dark">Tags :</Form.Label>
-                                                            <Form.Control
-                                                                as="select"
-                                                                name="tags"
-                                                                placeholder="Enter Your Tags"
-                                                                className="control-select"
-                                                                value={values.tags}
-                                                                onChange={handleChange}
-                                                                isValid={touched.tags && !errors.tags}
-                                                                isInvalid={!!errors.tags}
-                                                                multiple
-                                                            >
-                                                                <option>Select..</option>
-                                                                {tags.map((item: TagInterface) => (
-                                                                    <option key={item._id} value={item._id}>
-                                                                        {item.name}
-                                                                    </option>
-                                                                ))}
-                                                            </Form.Control>
-                                                            <Form.Control.Feedback type="invalid">
-                                                                {errors.tags}
-                                                            </Form.Control.Feedback>
-                                                        </Form.Group>{' '} */}
                                                         <Form.Group className="mb-3" controlId="validationFormik01">
                                                             <Form.Label className="text-dark">Content :</Form.Label>
                                                             <Form.Control
@@ -223,12 +203,13 @@ const Quotes: React.FC = () => {
                 </div>
             </Collapse>
             <h2 className="m-5">All Quotes</h2>
-            <Table style={{ width: '65%' }} className="m-4 text-black" striped bordered hover variant="white">
+            <Table style={{ width: '80%' }} className="m-4 text-black" striped bordered hover variant="white">
                 <thead>
                     <tr>
                         <th className="text-center">Content</th>
                         <th className="text-center">author</th>
                         <th className="text-center">likes</th>
+                        <th className="text-center">Comments</th>
                         <th className="text-center">Tags</th>
                         <th className="text-center " colSpan={2}>
                             Action
@@ -239,32 +220,45 @@ const Quotes: React.FC = () => {
                     {quotes.map((quote, index) => (
                         <tr key={index}>
                             <td className="text-center w-25 ">{quote.content}</td>
-                            <td className="text-center w-25 ">{quote.author}</td>
-                            <td className="text-center w-25 ">{quote.likes?.length}</td>
-                            <td className="text-center w-25 ">
+                            <td style={{ width: '15%', textAlign: 'center' }}> {quote.author}</td>
+                            <td style={{ width: '3%', textAlign: 'center' }}>{quote.likes?.length}</td>
+                            <td style={{ width: '3%', textAlign: 'center' }}>{quote.likes?.length}</td>
+                            <td style={{ width: '8%', textAlign: 'center' }}>
                                 {quote.tags.map((d: any, index) => (
                                     <span key={index}>{d.name}, </span>
                                 ))}
                             </td>
-                            <td style={{ width: '14%' }}>
-                                <button
-                                    className="btn btn-warning w-100"
-                                    onClick={() => {
-                                        openUpdateModal(quote);
+                            <td style={{ width: '2%' }}>
+                                <FontAwesomeIcon
+                                    onClick={() => openUpdateModal(quote)}
+                                    style={{
+                                        borderRadius: '15px',
+                                        cursor: 'pointer',
+                                        padding: '5px',
+                                        color: 'white',
+                                        background: 'rgb(23, 180, 23)',
+                                        marginLeft: '20px',
                                     }}
-                                >
-                                    Update
-                                </button>
+                                    size="lg"
+                                    className="me-1"
+                                    icon={faPenToSquare}
+                                />
                             </td>
-                            <td style={{ width: '14%' }}>
-                                <button
-                                    className="btn btn-danger w-100"
-                                    onClick={() => {
-                                        openDeleteModal(quote);
+                            <td style={{ width: '2%' }}>
+                                <FontAwesomeIcon
+                                    onClick={() => openDeleteModal(quote)}
+                                    style={{
+                                        borderRadius: '15px',
+                                        cursor: 'pointer',
+                                        padding: '5px',
+                                        color: 'white',
+                                        background: 'red',
+                                        marginLeft: '20px',
                                     }}
-                                >
-                                    delete
-                                </button>
+                                    size="lg"
+                                    className="me-1"
+                                    icon={faTrash}
+                                />
                             </td>
                         </tr>
                     ))}

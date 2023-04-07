@@ -14,6 +14,9 @@ import { tagSchema } from 'utils/YupValidation';
 import { TagFormValues } from 'types/interfaces/formValidate.interface';
 import BreadCrumbs from 'components/ui/breadCrumbs';
 
+import { faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 const TagsIndexPage: React.FC = () => {
     const [open, setOpen] = useState<boolean>(false);
     const [currentCategory, setcurrentCategory] = useState<TagFormValues | null>(null);
@@ -151,7 +154,14 @@ const TagsIndexPage: React.FC = () => {
                 </div>
             </Collapse>
             <h2 className="m-5">All Tags</h2>
-            <Table style={{ width: '65%' }} className="m-4 text-black" striped bordered hover variant="white">
+            <Table
+                style={{ width: '40%', marginLeft: '80px' }}
+                className="text-black"
+                striped
+                bordered
+                hover
+                variant="white"
+            >
                 <thead>
                     <tr>
                         <th className="text-center">Content</th>
@@ -163,26 +173,40 @@ const TagsIndexPage: React.FC = () => {
                 <tbody>
                     {tags.map((tag, index) => (
                         <tr key={index}>
-                            <td className="text-center w-25 ">{tag.name}</td>
-                            <td style={{ width: '14%' }}>
-                                <button
-                                    className="btn btn-warning w-100"
-                                    onClick={() => {
-                                        openUpdateModal(tag);
-                                    }}
-                                >
-                                    Update
-                                </button>
+                            <td style={{ width: '10%' }} className="text-center">
+                                {tag.name}
                             </td>
-                            <td style={{ width: '14%' }}>
-                                <button
-                                    className="btn btn-danger w-100"
-                                    onClick={() => {
-                                        openDeleteModal(tag);
+                            <td style={{ width: '1%' }}>
+                                <FontAwesomeIcon
+                                    onClick={() => openUpdateModal(tag)}
+                                    style={{
+                                        borderRadius: '15px',
+                                        cursor: 'pointer',
+                                        padding: '5px',
+                                        color: 'white',
+                                        background: 'rgb(23, 180, 23)',
+                                        marginLeft: '20px',
                                     }}
-                                >
-                                    delete
-                                </button>
+                                    size="lg"
+                                    className="me-1"
+                                    icon={faPenToSquare}
+                                />
+                            </td>
+                            <td style={{ width: '1%' }}>
+                                <FontAwesomeIcon
+                                    onClick={() => openDeleteModal(tag)}
+                                    style={{
+                                        borderRadius: '15px',
+                                        cursor: 'pointer',
+                                        padding: '5px',
+                                        color: 'white',
+                                        background: 'red',
+                                        marginLeft: '20px',
+                                    }}
+                                    size="lg"
+                                    className="me-1"
+                                    icon={faTrash}
+                                />
                             </td>
                         </tr>
                     ))}

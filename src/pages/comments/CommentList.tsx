@@ -129,7 +129,7 @@ const CommentList: React.FC<Props> = ({ comments }: Props) => {
                 btnText="Delete"
                 variant="danger"
             >
-                Are you sure you want to your comment
+                Are you sure you want to delete your comment
             </CustomModal>
             <CustomModal show={showUpdateModal} handleClose={() => setShowUpdateModal(false)} title="Update">
                 <UpdateForm

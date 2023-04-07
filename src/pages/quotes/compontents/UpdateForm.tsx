@@ -44,6 +44,7 @@ const UpdateForm: React.FC<Props> = ({ setShowUpdateModal, quotes, setQuotes, cu
                                 <Form.Control
                                     type="text"
                                     name="author"
+                                    style={{ width: '300px' }}
                                     placeholder="Enter Your Cat"
                                     value={values.author}
                                     onChange={handleChange}
@@ -55,9 +56,11 @@ const UpdateForm: React.FC<Props> = ({ setShowUpdateModal, quotes, setQuotes, cu
                             <Form.Group className="mb-3" controlId="validationFormik01">
                                 <Form.Label>content</Form.Label>
                                 <Form.Control
+                                    as="textarea"
                                     type="text"
                                     name="content"
                                     placeholder="Enter Your Cat"
+                                    style={{ width: '300px' }}
                                     value={values.content}
                                     onChange={handleChange}
                                     isValid={touched.content && !errors.content}
@@ -72,6 +75,7 @@ const UpdateForm: React.FC<Props> = ({ setShowUpdateModal, quotes, setQuotes, cu
                                     name="tags"
                                     placeholder="Enter Your Tags"
                                     className="control-select"
+                                    style={{ width: '300px' }}
                                     value={values.tags as string[]}
                                     onChange={handleChange}
                                     isValid={touched.tags && !errors.tags}

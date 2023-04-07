@@ -128,7 +128,7 @@ const Register: React.FC = () => {
                                                 </Form.Text>
                                             </Form.Group>
                                             <div className="d-grid">
-                                                <Button type="submit">Submit form</Button>
+                                                <Button type="submit">Register</Button>
                                             </div>
                                             <div className="mt-3">
                                                 <p className="mb-0 text-center">

@@ -32,7 +32,7 @@ const Forgotpassword: React.FC = () => {
                             <Card className="shadow px-4 text-white bg-transparent">
                                 <Card.Body>
                                     <div className="mb-3 mt-md-4">
-                                        <h2 className="fw-bold mb-2 text-center text-uppercase">Sign in</h2>
+                                        <h2 className="fw-bold mb-2 text-center text-uppercase">Forgot Password</h2>
                                         <div className="mb-3">
                                             <Form.Group className="mb-3" controlId="validationFormik02">
                                                 <Form.Label>Email</Form.Label>
@@ -53,7 +53,7 @@ const Forgotpassword: React.FC = () => {
                                                 </Form.Text>
                                             </Form.Group>
                                             <div className="d-grid">
-                                                <Button type="submit">Submit form</Button>
+                                                <Button type="submit">Reset Password</Button>
                                             </div>
                                         </div>
                                     </div>

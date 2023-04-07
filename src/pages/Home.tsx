@@ -4,12 +4,14 @@ import { Container, Row, Col } from 'react-bootstrap/';
 import { Link } from 'react-router-dom';
 import QuoteInterface from 'types/interfaces/quote.interface';
 import CateogieInterface from 'types/interfaces/tag.interface';
-import { getQuotes, getLatestQuotes } from 'services/quotesService';
+import { getQuotes, getLatestQuotes, getAllOfQuotes } from 'services/quotesService';
 import { getTags } from 'services/tagsService';
 import BreadCrumbs from 'components/ui/breadCrumbs';
 import { Quote } from 'pages/Quote';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Autosuggest from 'react-autosuggest';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Home: React.FC = () => {
     const [quotes, setQuotes] = useState<QuoteInterface[]>([]);
@@ -20,6 +22,7 @@ const Home: React.FC = () => {
     const [searchTag, setSearchTag] = useState<string>('');
     const [inputValue, setInputValue] = useState<string>('');
     const [suggestions, setSuggestions] = useState<QuoteInterface[]>([]);
+    const [searchQuote, setSearchQuote] = useState<QuoteInterface[]>([]);
     useEffect(() => {
         const loadData = async () => {
             try {
@@ -28,6 +31,8 @@ const Home: React.FC = () => {
                 setQuotes(data.realData);
                 const res = await getTags();
                 setTag(res.data.realData);
+                const allQuotes = await getAllOfQuotes();
+                setSearchQuote(allQuotes.data.realData);
             } catch (error) {
                 console.log(error);
             }
@@ -75,7 +80,7 @@ const Home: React.FC = () => {
 
         return inputLength === 0
             ? []
-            : quotes.filter(
+            : searchQuote.filter(
                   (quote: QuoteInterface) => quote.content.toLowerCase().slice(0, inputLength) === inputValue,
               );
     };
@@ -92,7 +97,10 @@ const Home: React.FC = () => {
     // <Link to={`/Quotes/details/{suggestion._id}`}>{suggestion.content}</Link>;
     const renderSuggestion = (suggestion: QuoteInterface): JSX.Element => (
         <Link style={{ textDecoration: 'none', color: 'black' }} to={`/Quotes/details/${suggestion._id}`}>
-            <div className="custom-suggestion">{suggestion.content}</div>
+            <div className="custom-suggestion">
+                <FontAwesomeIcon icon={faSearch} className="search-icon" />
+                {suggestion.content}
+            </div>
         </Link>
     );
 
@@ -138,7 +146,7 @@ const Home: React.FC = () => {
                             suggestionHighlightedClassName="react-autosuggest__suggestion--highlighted"
                         />
                     </div>
-                    <h1>{quoteHeader}</h1>
+                    <h1 className="mt-4 mx-4">{quoteHeader}</h1>
                     <button
                         className={`home-buttons button ${activeButton === 'populaire' ? 'active' : ''}`}
                         onClick={PopulaireQuotes}
@@ -175,21 +183,22 @@ const Home: React.FC = () => {
                     />
                     <Row>
                         <Col md={6}>
-                            {[...filteredTags].splice(0, Math.ceil(tag.length / 2)).map((tag) => (
+                            {filteredTags.slice(0, Math.ceil(filteredTags.length / 2)).map((tag) => (
                                 <Link className="link-tag" to={`/tag/${tag.name}`} key={tag._id}>
                                     #{tag.name} <br />
                                 </Link>
                             ))}
                         </Col>
-                        <Col md={6}>
-                            {/* {Data.tag.map((tag: any) => ( */}
-                            {[...filteredTags].splice(-Math.ceil(tag.length / 2)).map((tag: any) => (
-                                <Link className="link-tag" to={`/tag/${tag.name}`} key={tag._id}>
-                                    <span style={{ textDecoration: 'none' }}>#{tag.name}</span>
-                                    <br />
-                                </Link>
-                            ))}
-                        </Col>
+                        {filteredTags.length > 1 && (
+                            <Col md={6}>
+                                {filteredTags.slice(-Math.floor(filteredTags.length / 2)).map((tag) => (
+                                    <Link className="link-tag" to={`/tag/${tag.name}`} key={tag._id}>
+                                        <span style={{ textDecoration: 'none' }}>#{tag.name}</span>
+                                        <br />
+                                    </Link>
+                                ))}
+                            </Col>
+                        )}
                     </Row>
                 </Col>
             </Row>

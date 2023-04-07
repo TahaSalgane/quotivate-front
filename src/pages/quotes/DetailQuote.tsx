@@ -14,7 +14,7 @@ import ImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import AddComment from 'pages/comments/AddComment';
 import CommentList from 'pages/comments/CommentList';
 import { CommentInterface } from 'types/interfaces/comment.interface';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faComment } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useUserStore, { StoreStateInterface } from 'store/userStore';
 import clsx from 'classnames';
@@ -177,7 +177,7 @@ const DetailQuote: React.FC = () => {
                 <Col md={3}>
                     <span style={{ marginLeft: '15px', fontWeight: '600', color: 'black', fontSize: '30px' }}>
                         {' '}
-                        Quote tags :&nbsp;&nbsp;
+                        Quote tags: &nbsp;
                     </span>
                     <span style={{ marginLeft: '1px', fontWeight: '600', color: 'black', fontSize: '30px' }}>
                         {quote.tags?.map((d: any, index: number) => (
@@ -198,6 +198,8 @@ const DetailQuote: React.FC = () => {
                 icon={faHeart}
             />
             <span> {quote.likes?.length} likes </span>
+            <FontAwesomeIcon style={{ cursor: 'pointer', marginLeft: '10px' }} icon={faComment} />
+            <span> {quote.comments?.length} Comments </span>
             <p style={{ fontSize: '31px', width: '85%' }} className="detail-quote-content">
                 &apos; {quote.content}
             </p>

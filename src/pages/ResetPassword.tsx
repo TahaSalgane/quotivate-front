@@ -43,7 +43,7 @@ const ResetPaasword: React.FC = () => {
 
     return (
         <>
-            {!isResetPassword ? (
+            {isResetPassword ? (
                 <h1 style={{ marginTop: '150px', height: '400px' }} className="text-center text-white">
                     Not Found
                 </h1>
@@ -110,7 +110,7 @@ const ResetPaasword: React.FC = () => {
                                                     </Form.Group>
 
                                                     <div className="d-grid">
-                                                        <Button type="submit">Submit form</Button>
+                                                        <Button type="submit">reset password</Button>
                                                     </div>
                                                 </div>
                                             </div>

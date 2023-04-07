@@ -60,8 +60,8 @@ export const Quote: React.FC<props> = ({ data, quotes, setQuotes }: props) => {
                                 onClick={() => toggleLikeClick(data._id)}
                                 icon={faHeart}
                             />
-                            <span className="m-2"> 1</span>
-                            <Link to={`/quote/{quote.id}`}>
+                            <span className="m-2"> {data.likes?.length}</span>
+                            <Link to={`/Quotes/details/${data._id}`}>
                                 <FontAwesomeIcon icon={faComment} className="text-black" />
                             </Link>
                         </Col>

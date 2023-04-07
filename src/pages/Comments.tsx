@@ -60,7 +60,14 @@ const Comments: React.FC = () => {
             </div>
             <h2 className="m-5">All Users</h2>
 
-            <Table className="w-75 m-4 text-black" striped bordered hover variant="white">
+            <Table
+                style={{ width: '55%', marginLeft: '80px' }}
+                className="text-black"
+                striped
+                bordered
+                hover
+                variant="white"
+            >
                 <thead>
                     <tr style={{ fontFamily: ' arial, verdana, sans-serif' }}>
                         <th style={{ paddingLeft: '3%' }}>Users</th>
@@ -71,8 +78,7 @@ const Comments: React.FC = () => {
                                 placeholder="Filter by content"
                                 value={filterValue}
                                 onChange={handleFilterChange}
-                                className="w-50"
-                                style={{ marginLeft: '120px' }}
+                                style={{ marginLeft: '50px', width: '60%' }}
                             />{' '}
                         </th>
                         <th style={{ paddingLeft: '20px' }}>Action </th>
@@ -84,10 +90,17 @@ const Comments: React.FC = () => {
                             <td style={{ width: '12%', paddingLeft: '50px' }}>{comment.username}</td>
                             <td className="text-center w-25 ">{comment.text}</td>
 
-                            <td style={{ width: '7%' }}>
+                            <td style={{ width: '2%' }}>
                                 <FontAwesomeIcon
                                     onClick={() => openDeleteModal(comment)}
-                                    style={{ color: 'red', marginLeft: '20px' }}
+                                    style={{
+                                        borderRadius: '15px',
+                                        cursor: 'pointer',
+                                        padding: '5px',
+                                        color: 'white',
+                                        background: 'red',
+                                        marginLeft: '20px',
+                                    }}
                                     size="lg"
                                     className="me-1"
                                     icon={faTrash}
